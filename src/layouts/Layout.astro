@@ -1,0 +1,26 @@
+---
+const { title = "FAJRI-OS" } = Astro.props;
+---
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="FAJRI-OS — AI terminal agent for Muhammad Fajri Setyawan's Astro portfolio. Teknik Informatika @ UDINUS." />
+    <title>{title}</title>
+    <link rel="icon" href="/assets/logo-udinus.png" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" />
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap" rel="stylesheet" />
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet" />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.11.3/p5.min.js"></script>
+  </head>
+  <body>
+    <slot></slot>
+  </body>
+</html>
+
+<style>
+  @media (max-width: 600px) {
+    body { margin: 0; }
+  }
+</style>

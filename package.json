@@ -1,0 +1,19 @@
+{
+  "name": "portofolio-website",
+  "version": "1.0.0",
+  "description": "FAJRI-OS — AI terminal agent in an Astro cyberpunk portfolio for Muhammad Fajri Setyawan",
+  "type": "module",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "test": "echo 'No tests specified' && exit 0"
+  },
+  "keywords": ["astro", "portfolio", "terminal", "cyberpunk", "fajri-os"],
+  "author": "Muhammad Fajri Setyawan (LazenFajri)",
+  "license": "MIT",
+  "dependencies": {
+    "@astrojs/sitemap": "^3.7.3",
+    "astro": "^7.2.0"
+  }
+}

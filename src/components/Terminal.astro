@@ -1,0 +1,1464 @@
+---
+import { Code } from 'astro/components';
+import { Image } from 'astro:assets';
+---
+
+<div id="p5-bg-canvas"></div>
+<div id="fajri-terminal" class="terminal-root" data-mode="terminal">
+  <div class="terminal-scanlines"></div>
+  <div class="terminal-hud-glow"></div>
+
+  <div class="terminal-header">
+    <span class="terminal-title">
+      <span class="pulse-dot"></span> FAJRI-OS // v2026.08 <span class="dim">ASTRO-HERMES TERMINAL</span>
+    </span>
+    <div class="terminal-window-controls">
+      <span class="control-btn" data-color="#ff5f56"></span>
+      <span class="control-btn" data-color="#ffbd2e"></span>
+      <span class="control-btn" data-color="#27c93f"></span>
+    </div>
+    <button id="mode-toggle" class="mode-toggle" title="Toggle Terminal / Neubrutalist GUI">
+      <span class="mode-icon">□</span>
+      <span class="mode-label">GUI</span>
+    </button>
+  </div>
+
+  <div class="terminal-body" id="terminal-body">
+    <!-- typed line-by-line via JS -->
+  </div>
+
+  <div class="terminal-input-zone">
+    <span class="input-prompt">$</span>
+    <input type="text" id="terminal-input" class="terminal-input" autocomplete="off" spellcheck="false"
+           placeholder="Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE" />
+  </div>
+
+  <div class="terminal-status">
+    <span class="status-item">PORT: <span class="highlight">4321</span></span>
+    <span class="status-item">STATUS: <span class="highlight success">200 OK</span></span>
+    <span class="status-item">CONN: <span class="highlight">SECURE</span></span>
+    <span class="status-item">AGENT: <span class="highlight warn">FAJRI-OS ACTIVE</span></span>
+  </div>
+
+  <!-- GUI Mode Content (Modern Neubrutalism Portfolio Website) -->
+  <div id="neubrutalism-gui" class="gui-container">
+    <header class="gui-header">
+      <div class="gui-brand">
+        <img src="/assets/logo-udinus.png" alt="UDINUS Logo" class="gui-brand-logo" width="36" height="36" />
+        <div class="gui-brand-text">
+          <span class="gui-brand-title">MUHAMMAD FAJRI SETYAWAN</span>
+          <span class="gui-brand-sub">UDINUS • TEKNIK INFORMATIKA 2026</span>
+        </div>
+      </div>
+      <div class="gui-nav-actions">
+        <span class="gui-status-pill"><span class="material-symbols-outlined nav-icon">bolt</span> FAJRI-OS ONLINE</span>
+        <button id="gui-mode-toggle" class="gui-toggle-btn">
+          <span class="material-symbols-outlined gui-btn-icon">terminal</span> SWITCH TO TERMINAL
+        </button>
+      </div>
+    </header>
+
+    <!-- Parallax background floating shapes -->
+    <div class="gui-parallax-bg">
+      <div class="parallax-shape shape-1" data-speed="0.15"></div>
+      <div class="parallax-shape shape-2" data-speed="-0.2"></div>
+      <div class="parallax-shape shape-3" data-speed="0.25"></div>
+    </div>
+
+    <section class="gui-hero">
+      <div class="gui-hero-text">
+        <div class="gui-badge-row">
+          <span class="nb-badge nb-badge-yellow"><span class="material-symbols-outlined badge-icon">school</span> UDINUS 2026</span>
+          <span class="nb-badge nb-badge-coral"><span class="material-symbols-outlined badge-icon">movie</span> AFTER EFFECTS</span>
+          <span class="nb-badge nb-badge-sky"><span class="material-symbols-outlined badge-icon">smart_toy</span> HERMES AGENT</span>
+        </div>
+        <h1 class="gui-hero-title">CREATIVE CODER & MOTION DESIGNER</h1>
+        <p class="gui-hero-desc">
+          Halo! Saya <strong>Muhammad Fajri Setyawan</strong> (@LazenFajri), mahasiswa Teknik Informatika 
+          <strong>Universitas Dian Nuswantoro (UDINUS)</strong> Semarang & alumni SMK Negeri 7 Semarang. 
+          Spesialisasi di bidang video editing After Effects, prompt engineering AI agent, dan web development.
+        </p>
+        <div class="gui-hero-actions">
+          <a href="#gui-profile" class="nb-btn nb-btn-coral"><span class="material-symbols-outlined btn-icon">person</span> Profil</a>
+          <a href="#gui-skills" class="nb-btn nb-btn-yellow"><span class="material-symbols-outlined btn-icon">electric_bolt</span> Skill</a>
+          <a href="#gui-assets" class="nb-btn nb-btn-sky"><span class="material-symbols-outlined btn-icon">verified</span> Lisensi</a>
+          <a href="https://youtube.com/@fajriaep580" target="_blank" rel="noopener" class="nb-btn nb-btn-lavender"><span class="material-symbols-outlined btn-icon">play_circle</span> YouTube</a>
+        </div>
+      </div>
+      <div class="gui-hero-avatar-box" data-speed="0.08">
+        <div class="gui-avatar-card">
+          <img src="/assets/Muhammad Fajri Setyawan.png" alt="Muhammad Fajri Setyawan" class="gui-avatar-img" width="260" height="260" loading="eager" decoding="async" />
+          <div class="gui-avatar-caption">
+            <strong>Muhammad Fajri Setyawan</strong>
+            <span>@LazenFajri • Semarang, ID</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="gui-grid">
+      <section id="gui-profile" class="nb-card nb-card-yellow" data-speed="0.05">
+        <div class="nb-card-header">
+          <h2><span class="material-symbols-outlined section-icon">badge</span> INFORMASI DIRI</h2>
+          <span class="nb-card-tag">PROFILE</span>
+        </div>
+        <div class="gui-info-list">
+          <div class="gui-info-item">
+            <span class="info-label">NAMA LENGKAP</span>
+            <span class="info-val">Muhammad Fajri Setyawan</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">USERNAME</span>
+            <span class="info-val">LazenFajri</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">STATUS</span>
+            <span class="info-val">Mahasiswa Baru FIK (UDINUS)</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">INSTITUSI</span>
+            <span class="info-val">Universitas Dian Nuswantoro</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">PRODI</span>
+            <span class="info-val">Teknik Informatika (S1)</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">PENDIDIKAN DAHULU</span>
+            <span class="info-val">SMK Negeri 7 Semarang</span>
+          </div>
+          <div class="gui-info-item">
+            <span class="info-label">HOBI & FAVORIT</span>
+            <span class="info-val"><span class="material-symbols-outlined inline-icon">restaurant</span> Kulineran & Makan</span>
+          </div>
+        </div>
+      </section>
+
+      <section id="gui-skills" class="nb-card nb-card-lavender" data-speed="-0.05">
+        <div class="nb-card-header">
+          <h2><span class="material-symbols-outlined section-icon">psychology</span> SKILLS & EXPERTISE</h2>
+          <span class="nb-card-tag">SKILLS</span>
+        </div>
+        <div class="gui-skills-container">
+          <div class="gui-skill-item">
+            <div class="gui-skill-meta">
+              <span><span class="material-symbols-outlined skill-icon">movie</span> After Effects Video Editing</span>
+              <strong>[SEMI-PRO] 80%</strong>
+            </div>
+            <div class="gui-progress-bar">
+              <div class="gui-progress-fill coral" style="width: 80%;"></div>
+            </div>
+          </div>
+          <div class="gui-skill-item">
+            <div class="gui-skill-meta">
+              <span><span class="material-symbols-outlined skill-icon">smart_toy</span> Agent Prompting</span>
+              <strong>[SEMI-PRO] 80%</strong>
+            </div>
+            <div class="gui-progress-bar">
+              <div class="gui-progress-fill sky" style="width: 80%;"></div>
+            </div>
+          </div>
+          <div class="gui-skill-item">
+            <div class="gui-skill-meta">
+              <span><span class="material-symbols-outlined skill-icon">code</span> Coding Fundamentals</span>
+              <strong>[BASIC] 40%</strong>
+            </div>
+            <div class="gui-progress-bar">
+              <div class="gui-progress-fill yellow" style="width: 40%;"></div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="gui-assets" class="nb-card nb-card-sky" data-speed="0.08">
+        <div class="nb-card-header">
+          <h2><span class="material-symbols-outlined section-icon">workspace_premium</span> SERTIFIKAT & LISENSI</h2>
+          <span class="nb-card-tag">DOWNLOADS</span>
+        </div>
+        <div class="gui-asset-list">
+          <a href="/assets/CCNA License.pdf" target="_blank" class="gui-asset-link">
+            <span class="material-symbols-outlined asset-icon">history_edu</span>
+            <div class="asset-details">
+              <strong>CCNA License</strong>
+              <small>Cisco Certified Network Associate (PDF)</small>
+            </div>
+            <span class="nb-mini-btn">UNDUH</span>
+          </a>
+          <a href="/assets/Java Fundametals license.pdf" target="_blank" class="gui-asset-link">
+            <span class="material-symbols-outlined asset-icon">terminal</span>
+            <div class="asset-details">
+              <strong>Java Fundamentals License</strong>
+              <small>Oracle / Java Certification (PDF)</small>
+            </div>
+            <span class="nb-mini-btn">UNDUH</span>
+          </a>
+          <a href="/assets/PC, Hardware, and Software License.pdf" target="_blank" class="gui-asset-link">
+            <span class="material-symbols-outlined asset-icon">build_circle</span>
+            <div class="asset-details">
+              <strong>PC, Hardware, & Software License</strong>
+              <small>IT Infrastructure & Hardware (PDF)</small>
+            </div>
+            <span class="nb-mini-btn">UNDUH</span>
+          </a>
+        </div>
+      </section>
+
+      <section id="gui-links" class="nb-card nb-card-coral" data-speed="-0.08">
+        <div class="nb-card-header">
+          <h2><span class="material-symbols-outlined section-icon">share</span> MEDIA SOSIAL & PORTAL</h2>
+          <span class="nb-card-tag">CONNECT</span>
+        </div>
+        <div class="gui-link-grid">
+          <a href="https://youtube.com/@fajriaep580" target="_blank" rel="noopener" class="gui-social-btn">
+            <img src="/assets/Youtube_logo.png" alt="YouTube" width="22" height="22" />
+            <span>YouTube (@fajriaep580)</span>
+          </a>
+          <a href="https://github.com/LazenFajri" target="_blank" rel="noopener" class="gui-social-btn">
+            <img src="/assets/Octicons-mark-github.svg" alt="GitHub" width="22" height="22" />
+            <span>GitHub (LazenFajri)</span>
+          </a>
+          <a href="https://www.linkedin.com/in/muhammad-fajri-setyawan" target="_blank" rel="noopener" class="gui-social-btn">
+            <img src="/assets/LinkedIn_icon.svg" alt="LinkedIn" width="22" height="22" />
+            <span>LinkedIn (Fajri Setyawan)</span>
+          </a>
+        </div>
+      </section>
+    </div>
+  </div>
+</div>
+
+<style is:global>
+  @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&family=JetBrains+Mono:wght@400;500;600;700&family=Fira+Code:wght@400;500;600;700&display=swap');
+
+  :root {
+    /* Terminal colors (cyberpunk) */
+    --bg: #0d0215;
+    --bg-card: #110422;
+    --text-primary: #e0d8ff;
+    --text-dim: #7a6aa1;
+    --text-dimmer: #4b3d65;
+    --accent-cyan: #00f0ff;
+    --accent-pink: #ff2e95;
+    --accent-purple: #8a2be2;
+    --accent-gold: #ffd700;
+    --border: #2d1a42;
+    --border-bright: #5a3a8a;
+    --glow-cyan: 0 0 8px var(--accent-cyan), 0 0 20px var(--accent-cyan);
+    --glow-pink: 0 0 8px var(--accent-pink), 0 0 20px var(--accent-pink);
+    --glow-purple: 0 0 6px var(--accent-purple), 0 0 16px var(--accent-purple);
+
+    /* Neubrutalism tokens (from neubrutalism.com) */
+    --nb-black: #000000;
+    --nb-white: #FFFDF5;
+    --nb-yellow: #FFD23F;
+    --nb-coral: #FF6B6B;
+    --nb-sky: #74B9FF;
+    --nb-green: #88D498;
+    --nb-orange: #FFA552;
+    --nb-lavender: #B8A9FA;
+
+    --nb-stroke: 3px;
+    --nb-radius: 0;
+    --nb-shadow-sm: 3px 3px 0 0 var(--nb-black);
+    --nb-shadow-md: 5px 5px 0 0 var(--nb-black);
+    --nb-shadow-lg: 8px 8px 0 0 var(--nb-black);
+
+    /* Fonts */
+    --font-display: 'Syne', 'Space Grotesk', sans-serif;
+    --font-heading: 'Space Grotesk', 'Syne', sans-serif;
+    --font-body: 'Inter', 'Space Mono', monospace;
+    --font-mono: 'Space Mono', 'JetBrains Mono', monospace;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  body {
+    background: radial-gradient(ellipse at top, #140225 0%, var(--bg) 100%);
+    min-height: 100vh;
+    font-family: var(--font-body);
+    overflow-x: hidden;
+    color: var(--text-primary);
+    line-height: 1.6;
+  }
+
+  /* ============================================================
+     TERMINAL MODE (default)
+     ============================================================ */
+
+  .terminal-root {
+    position: relative;
+    width: 100%;
+    max-width: 900px;
+    min-height: 520px;
+    margin: 2rem auto;
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    box-shadow:
+      0 0 1px var(--border-bright),
+      0 0 6px var(--border-bright),
+      inset 0 0 30px rgba(138, 43, 226, 0.08);
+    overflow: hidden;
+    backdrop-filter: blur(4px);
+  }
+
+  .terminal-scanlines {
+    position: absolute;
+    inset: 0;
+    background: repeating-linear-gradient(
+      0deg,
+      rgba(13, 2, 21, 0.15) 0px,
+      rgba(13, 2, 21, 0.15) 1px,
+      transparent 1px,
+      transparent 3px
+    );
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  .terminal-hud-glow {
+    position: absolute;
+    inset: 0;
+    background:
+      linear-gradient(90deg, transparent 0%, rgba(0, 240, 255, 0.03) 50%, transparent 100%),
+      linear-gradient(rgba(255, 46, 149, 0.04), transparent 80%);
+    pointer-events: none;
+    z-index: 0;
+    opacity: 0.8;
+  }
+
+  /* Terminal Header with macOS-style controls */
+  .terminal-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1.2rem;
+    background: rgba(13, 2, 21, 0.6);
+    border-bottom: 1px solid var(--border);
+    backdrop-filter: blur(4px);
+    z-index: 2;
+    position: relative;
+  }
+
+  .terminal-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.8rem;
+    font-weight: 600;
+    color: var(--accent-cyan);
+    letter-spacing: 1px;
+  }
+
+  .pulse-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-cyan);
+    animation: pulse 1.5s ease-in-out infinite;
+  }
+
+  @keyframes pulse {
+    0%, 100% { opacity: 0.8; box-shadow: 0 0 4px var(--accent-cyan), 0 0 8px var(--accent-cyan); }
+    50% { opacity: 1; box-shadow: 0 0 6px var(--accent-cyan), 0 0 12px var(--accent-cyan), 0 0 20px var(--accent-cyan); }
+  }
+
+  .dim { color: var(--text-dim); font-weight: 400; }
+
+  .terminal-window-controls {
+    display: flex;
+    gap: 6px;
+  }
+
+  .control-btn {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+  }
+  .control-btn:nth-child(1) { background: #ff5f56; }
+  .control-btn:nth-child(2) { background: #ffbd2e; }
+  .control-btn:nth-child(3) { background: #27c93f; }
+
+  /* Terminal body */
+  .terminal-body {
+    padding: 1.5rem 1.5rem 1rem;
+    min-height: 380px;
+    font-size: 0.82rem;
+    line-height: 1.5;
+    z-index: 2;
+    position: relative;
+    overflow-y: auto;
+  }
+
+  .terminal-body::-webkit-scrollbar { width: 6px; }
+  .terminal-body::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.2); }
+  .terminal-body::-webkit-scrollbar-thumb { background: var(--accent-purple); border-radius: 3px; }
+
+  /* Output lines */
+  .line {
+    margin-bottom: 0.2rem;
+    opacity: 0;
+    transform: translateY(8px);
+    animation: fadeInUp 0.3s forwards;
+  }
+
+  @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+
+  .line-delay-0 { animation-delay: 0ms; }
+  .line-delay-1 { animation-delay: 80ms; }
+  .line-delay-2 { animation-delay: 160ms; }
+  .line-delay-3 { animation-delay: 240ms; }
+  .line-delay-4 { animation-delay: 320ms; }
+  .line-delay-5 { animation-delay: 400ms; }
+  .line-delay-6 { animation-delay: 480ms; }
+  .line-delay-7 { animation-delay: 560ms; }
+  .line-delay-8 { animation-delay: 640ms; }
+  .line-delay-9 { animation-delay: 720ms; }
+  .line-delay-10 { animation-delay: 800ms; }
+  .line-delay-11 { animation-delay: 880ms; }
+  .line-delay-12 { animation-delay: 960ms; }
+  .line-delay-13 { animation-delay: 1040ms; }
+  .line-delay-14 { animation-delay: 1120ms; }
+  .line-delay-15 { animation-delay: 1200ms; }
+
+  .tag {
+    display: inline-block;
+    padding: 0.1rem 0.45rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    margin-right: 0.4rem;
+  }
+  .tag-sys { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+  .tag-prof { background: rgba(255, 46, 149, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 46, 149, 0.3); }
+  .tag-asset { background: rgba(138, 43, 226, 0.15); color: var(--accent-purple); border: 1px solid rgba(138, 43, 226, 0.3); }
+  .tag-ok { background: rgba(39, 201, 63, 0.15); color: #27c93f; border: 1px solid rgba(39, 201, 63, 0.3); }
+  .tag-warn { background: rgba(255, 189, 46, 0.15); color: #ffbd2e; border: 1px solid rgba(255, 189, 46, 0.3); }
+
+  .highlight { color: var(--accent-cyan); }
+  .highlight-cyan { color: var(--accent-cyan); }
+  .highlight-pink { color: var(--accent-pink); }
+  .highlight-purple { color: var(--accent-purple); }
+  .highlight-gold { color: var(--accent-gold); }
+  .success { color: #27c93f; }
+  .warn { color: #ffbd2e; }
+  .dim { color: var(--text-dim); }
+  .makan { color: var(--accent-pink); }
+
+  .divider {
+    color: var(--border-bright);
+    text-align: center;
+    margin: 0.6rem 0;
+    letter-spacing: 2px;
+  }
+
+  .ascii-box {
+    border: 1px solid var(--border-bright);
+    border-radius: 4px;
+    padding: 0.1px;
+    margin: 0.5rem 0;
+    font-size: 0.78rem;
+    background: rgba(13, 2, 21, 0.3);
+  }
+  .ascii-box-inner {
+    border: 1px solid var(--border-bright);
+    border-radius: 3px;
+    padding: 0.6rem 0.8rem;
+    background: rgba(0, 0, 0, 0.25);
+  }
+  .ascii-box-title {
+    background: var(--border-bright);
+    color: var(--bg);
+    padding: 0.2rem 0.6rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 1px;
+    border-radius: 2px;
+    margin-bottom: 0.4rem;
+  }
+
+  .skill-bar { margin: 0.3rem 0; }
+  .skill-name {
+    display: flex; justify-content: space-between;
+    margin-bottom: 0.15rem; font-size: 0.78rem;
+  }
+  .skill-name span { color: var(--accent-cyan); }
+  .skill-name .level-label { color: var(--text-dim); }
+  .skill-track {
+    height: 8px; background: rgba(0, 0, 0, 0.4);
+    border: 1px solid var(--border); border-radius: 4px; overflow: hidden; position: relative;
+  }
+  .skill-fill {
+    height: 100%; border-radius: 3px;
+    transition: width 0.8s ease, background-color 0.3s;
+    display: flex; align-items: center; justify-content: flex-end; padding-right: 4px;
+  }
+  .skill-fill .bar-text {
+    font-size: 0.68rem; font-weight: 700; color: var(--bg);
+    text-shadow: 0 0 3px rgba(0, 0, 0, 0.7);
+  }
+
+  .asset-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+    gap: 0.4rem; margin: 0.5rem 0;
+  }
+  .asset-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.3rem 0.5rem; border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border);
+    font-size: 0.72rem; transition: all 0.2s;
+  }
+  .asset-item:hover {
+    background: rgba(138, 43, 226, 0.1); border-color: var(--accent-purple);
+    transform: translateX(2px);
+  }
+  .asset-icon { font-size: 1.1rem; }
+  .asset-name { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; color: var(--text-primary); }
+  .asset-size { color: var(--text-dim); font-size: 0.65rem; }
+
+  .link-grid {
+    display: grid; grid-template-columns: repeat(2, 1fr); gap: 0.4rem; margin: 0.5rem 0;
+  }
+  .link-item {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.4rem 0.5rem; border-radius: 4px;
+    background: rgba(0, 0, 0, 0.2); border: 1px solid var(--border);
+    font-size: 0.8rem; transition: all 0.2s; text-decoration: none;
+  }
+  .link-item:hover {
+    background: rgba(0, 240, 255, 0.08); border-color: var(--accent-cyan);
+    transform: translateX(2px);
+  }
+  .link-item .link-icon { font-size: 1.2rem; min-width: 24px; text-align: center; }
+  .link-item .link-text { color: var(--text-primary); flex: 1; }
+  .link-item .link-url { color: var(--text-dim); font-size: 0.68rem; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 140px; }
+
+  .terminal-input-zone {
+    display: flex; align-items: center; gap: 0.4rem;
+    padding: 0.6rem 1.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid var(--border);
+    z-index: 2; position: relative;
+  }
+
+  .input-prompt { color: var(--accent-cyan); font-weight: 700; font-size: 0.9rem; text-shadow: var(--glow-cyan); }
+
+  .terminal-input {
+    flex: 1; background: transparent; border: none;
+    color: var(--text-primary);
+    font-family: var(--font-mono); font-size: 0.82rem;
+    outline: none; caret-color: var(--accent-pink);
+  }
+  .terminal-input::placeholder { color: var(--text-dim); }
+
+  .terminal-status {
+    display: flex; justify-content: space-around; align-items: center;
+    padding: 0.4rem 1rem;
+    background: rgba(0, 0, 0, 0.3);
+    border-top: 1px solid var(--border);
+    font-size: 0.72rem; z-index: 2; position: relative;
+    flex-wrap: wrap; gap: 0.3rem;
+  }
+  .status-item { display: flex; align-items: center; gap: 0.25rem; }
+
+  /* Profile card (terminal) */
+  .profile-grid {
+    display: grid; grid-template-columns: 90px 1fr; gap: 0.5rem;
+    margin: 0.5rem 0; align-items: start;
+  }
+  .profile-pic {
+    width: 64px; height: 64px;
+    border-radius: 6px; object-fit: cover;
+    border: 2px solid var(--accent-cyan);
+    box-shadow: var(--glow-cyan);
+    image-rendering: pixelated;
+  }
+  .profile-details { display: flex; flex-direction: column; gap: 0.15rem; font-size: 0.78rem; }
+  .profile-details .label { color: var(--text-dim); }
+  .profile-details .value { color: var(--text-primary); }
+  .badge {
+    display: inline-block; padding: 0.1rem 0.3rem; border-radius: 3px;
+    font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+    margin-top: 0.2rem; align-self: flex-start;
+  }
+  .badge-student { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
+  .badge-coder { background: rgba(255, 46, 149, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 46, 149, 0.3); }
+  .makan { color: var(--accent-pink); }
+
+  /* Mode Toggle Button */
+  .mode-toggle {
+    display: flex; align-items: center; gap: 0.3rem;
+    padding: 0.3rem 0.5rem;
+    background: rgba(0, 0, 0, 0.3);
+    border: 1px solid var(--border); border-radius: 4px;
+    color: var(--text-dim);
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .mode-toggle:hover { background: rgba(0, 240, 255, 0.1); border-color: var(--accent-cyan); color: var(--accent-cyan); }
+  .mode-toggle.active { background: rgba(0, 240, 255, 0.2); border-color: var(--accent-cyan); color: var(--accent-cyan); }
+  .mode-icon { font-size: 0.8rem; }
+
+  /* ============================================================
+     P5.JS BACKGROUND CANVAS
+     ============================================================ */
+
+  #p5-bg-canvas {
+    position: fixed;
+    inset: 0;
+    pointer-events: none;
+    z-index: 0;
+  }
+
+  #p5-bg-canvas canvas {
+    display: block;
+    width: 100% !important;
+    height: 100% !important;
+  }
+
+  /* ============================================================
+     NEUBRUTALISM GUI MODE (Modern Portfolio Website)
+     ============================================================ */
+
+  #neubrutalism-gui {
+    display: none;
+    background: var(--nb-white);
+    color: var(--nb-black);
+    padding: 1.5rem;
+    font-family: var(--font-body);
+    position: relative;
+    overflow: hidden;
+  }
+
+  /* Material Symbols styling inside GUI */
+  #neubrutalism-gui .material-symbols-outlined {
+    font-size: 1.15em;
+    vertical-align: middle;
+    font-variation-settings: 'FILL' 1, 'wght' 600, 'GRAD' 0, 'opsz' 24;
+    display: inline-block;
+  }
+  .nav-icon { font-size: 1rem !important; margin-right: 3px; color: var(--nb-coral); }
+  .gui-btn-icon { font-size: 1.1rem !important; margin-right: 4px; }
+  .badge-icon { font-size: 0.9rem !important; margin-right: 3px; }
+  .btn-icon { font-size: 1.1rem !important; margin-right: 4px; }
+  .section-icon { font-size: 1.25rem !important; margin-right: 6px; color: var(--nb-black); }
+  .skill-icon { font-size: 1.05rem !important; margin-right: 4px; }
+  .inline-icon { font-size: 1rem !important; margin-right: 4px; color: var(--nb-coral); }
+  .asset-icon { font-size: 1.8rem !important; color: var(--nb-black); }
+
+  /* Parallax Background Floating Elements */
+  .gui-parallax-bg {
+    position: absolute; inset: 0; pointer-events: none; overflow: hidden; z-index: 0;
+  }
+  .parallax-shape {
+    position: absolute; border: 2px solid var(--nb-black);
+    box-shadow: 3px 3px 0 0 var(--nb-black); opacity: 0.12;
+    transition: transform 0.1s ease-out;
+  }
+  .shape-1 { top: 8%; right: 4%; width: 70px; height: 70px; background: var(--nb-coral); transform: rotate(15deg); }
+  .shape-2 { top: 48%; left: 2%; width: 45px; height: 45px; background: var(--nb-yellow); transform: rotate(-20deg); border-radius: 50%; }
+  .shape-3 { bottom: 12%; right: 6%; width: 90px; height: 40px; background: var(--nb-sky); transform: rotate(8deg); }
+
+  .gui-hero, .nb-card { position: relative; z-index: 1; transition: transform 0.15s ease-out, box-shadow 0.15s ease-out; }
+
+  /* ============================================================
+     RELOAD / ENTRANCE ANIMATIONS (CLI & GUI)
+     ============================================================ */
+
+  .terminal-root {
+    animation: terminalPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  }
+
+  @keyframes terminalPop {
+    0% { opacity: 0; transform: translateY(24px) scale(0.97); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .terminal-root .terminal-header {
+    animation: cliHeaderSlide 0.5s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root .terminal-status {
+    animation: cliStatusSlide 0.5s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root .terminal-input-zone {
+    animation: cliInputSlide 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes cliHeaderSlide {
+    0% { opacity: 0; transform: translateY(-15px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cliStatusSlide {
+    0% { opacity: 0; transform: translateY(15px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes cliInputSlide {
+    0% { opacity: 0; transform: scaleX(0.95); }
+    100% { opacity: 1; transform: scaleX(1); }
+  }
+
+  /* Neubrutalism GUI Staggered Reload Animations */
+  .terminal-root[data-mode="gui"] .gui-header {
+    animation: nbSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] .gui-hero {
+    animation: nbHeroPop 0.6s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] .nb-badge:nth-child(1) {
+    animation: nbBadgeScale 0.4s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .nb-badge:nth-child(2) {
+    animation: nbBadgeScale 0.4s 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .nb-badge:nth-child(3) {
+    animation: nbBadgeScale 0.4s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] .gui-hero-title {
+    animation: nbTextFade 0.5s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .gui-hero-desc {
+    animation: nbTextFade 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] .nb-btn:nth-child(1) {
+    animation: nbBtnBounce 0.4s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .nb-btn:nth-child(2) {
+    animation: nbBtnBounce 0.4s 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .nb-btn:nth-child(3) {
+    animation: nbBtnBounce 0.4s 0.66s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+  .terminal-root[data-mode="gui"] .nb-btn:nth-child(4) {
+    animation: nbBtnBounce 0.4s 0.74s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] .gui-avatar-card {
+    animation: nbAvatarTilt 0.65s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  }
+
+  .terminal-root[data-mode="gui"] #gui-profile {
+    animation: nbCardEntry 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root[data-mode="gui"] #gui-skills {
+    animation: nbCardEntry 0.5s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root[data-mode="gui"] #gui-assets {
+    animation: nbCardEntry 0.5s 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root[data-mode="gui"] #gui-links {
+    animation: nbCardEntry 0.5s 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+
+  @keyframes nbSlideDown {
+    0% { opacity: 0; transform: translateY(-25px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes nbHeroPop {
+    0% { opacity: 0; transform: scale(0.93) translateY(20px); }
+    100% { opacity: 1; transform: scale(1) translateY(0); }
+  }
+
+  @keyframes nbBadgeScale {
+    0% { opacity: 0; transform: scale(0.4) rotate(-8deg); }
+    100% { opacity: 1; transform: scale(1) rotate(0); }
+  }
+
+  @keyframes nbTextFade {
+    0% { opacity: 0; transform: translateY(12px); }
+    100% { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes nbBtnBounce {
+    0% { opacity: 0; transform: translateY(16px) scale(0.88); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  @keyframes nbAvatarTilt {
+    0% { opacity: 0; transform: scale(0.85) rotate(-6deg) translateY(25px); }
+    100% { opacity: 1; transform: scale(1) rotate(0) translateY(0); }
+  }
+
+  @keyframes nbCardEntry {
+    0% { opacity: 0; transform: translateY(30px) scale(0.96); }
+    100% { opacity: 1; transform: translateY(0) scale(1); }
+  }
+
+  .terminal-root[data-mode="gui"] #neubrutalism-gui {
+    display: block;
+  }
+
+  .terminal-root[data-mode="gui"] .terminal-scanlines,
+  .terminal-root[data-mode="gui"] .terminal-hud-glow,
+  .terminal-root[data-mode="gui"] .terminal-header,
+  .terminal-root[data-mode="gui"] .terminal-body,
+  .terminal-root[data-mode="gui"] .terminal-input-zone,
+  .terminal-root[data-mode="gui"] .terminal-status {
+    display: none !important;
+  }
+
+  .terminal-root[data-mode="gui"] {
+    background: var(--nb-white);
+    border: var(--nb-stroke) solid var(--nb-black);
+    border-radius: var(--nb-radius);
+    box-shadow: var(--nb-shadow-lg);
+    max-width: 1000px;
+    margin: 1.5rem auto;
+    min-height: auto;
+  }
+
+  /* Neubrutalism Header */
+  .gui-header {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 1.2rem; margin-bottom: 1.5rem;
+    border-bottom: var(--nb-stroke) solid var(--nb-black);
+    flex-wrap: wrap; gap: 1rem;
+  }
+  .gui-brand { display: flex; align-items: center; gap: 0.8rem; }
+  .gui-brand-logo { border: 2px solid var(--nb-black); border-radius: 4px; background: var(--nb-yellow); object-fit: contain; }
+  .gui-brand-text { display: flex; flex-direction: column; }
+  .gui-brand-title { font-family: var(--font-heading); font-weight: 800; font-size: 1.1rem; letter-spacing: 0.05em; }
+  .gui-brand-sub { font-size: 0.72rem; font-family: var(--font-mono); font-weight: 700; opacity: 0.7; }
+  .gui-nav-actions { display: flex; align-items: center; gap: 0.8rem; }
+  .gui-status-pill {
+    background: var(--nb-yellow); border: 2px solid var(--nb-black);
+    padding: 0.3rem 0.6rem; font-size: 0.75rem; font-family: var(--font-mono); font-weight: 700;
+    box-shadow: 2px 2px 0 0 var(--nb-black);
+  }
+  .gui-toggle-btn {
+    background: var(--nb-coral); color: var(--nb-white);
+    border: var(--nb-stroke) solid var(--nb-black);
+    padding: 0.4rem 0.9rem; font-family: var(--font-heading); font-weight: 800; font-size: 0.82rem;
+    cursor: pointer; box-shadow: var(--nb-shadow-sm); transition: all 0.15s;
+  }
+  .gui-toggle-btn:hover {
+    transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-md); background: var(--nb-black); color: var(--nb-yellow);
+  }
+
+  /* Neubrutalism Hero */
+  .gui-hero {
+    display: grid; grid-template-columns: 1.2fr 0.8fr; gap: 2rem;
+    padding: 1.5rem; background: var(--nb-yellow);
+    border: var(--nb-stroke) solid var(--nb-black);
+    box-shadow: var(--nb-shadow-md); margin-bottom: 2rem;
+    align-items: center;
+  }
+  .gui-badge-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+  .nb-badge {
+    border: 2px solid var(--nb-black); padding: 0.2rem 0.6rem;
+    font-family: var(--font-mono); font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+    box-shadow: 2px 2px 0 0 var(--nb-black);
+  }
+  .nb-badge-yellow { background: var(--nb-white); color: var(--nb-black); }
+  .nb-badge-coral { background: var(--nb-coral); color: var(--nb-white); }
+  .nb-badge-sky { background: var(--nb-sky); color: var(--nb-black); }
+
+  .gui-hero-title {
+    font-family: var(--font-heading); font-size: 2.2rem; font-weight: 800;
+    line-height: 1.1; margin-bottom: 1rem; text-transform: uppercase;
+  }
+  .gui-hero-desc { font-size: 0.95rem; line-height: 1.6; margin-bottom: 1.5rem; }
+  .gui-hero-actions { display: flex; gap: 0.6rem; flex-wrap: wrap; }
+
+  .nb-btn {
+    display: inline-flex; align-items: center; gap: 0.4rem;
+    border: var(--nb-stroke) solid var(--nb-black); padding: 0.5rem 1rem;
+    font-family: var(--font-heading); font-weight: 700; font-size: 0.85rem; text-decoration: none;
+    color: var(--nb-black); box-shadow: var(--nb-shadow-sm); transition: all 0.15s;
+    cursor: pointer;
+  }
+  .nb-btn:hover { transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-md); }
+  .nb-btn-coral { background: var(--nb-coral); color: var(--nb-white); }
+  .nb-btn-yellow { background: var(--nb-white); }
+  .nb-btn-sky { background: var(--nb-sky); }
+  .nb-btn-lavender { background: var(--nb-lavender); }
+
+  .gui-hero-avatar-box { display: flex; justify-content: center; }
+  .gui-avatar-card {
+    background: var(--nb-white); border: var(--nb-stroke) solid var(--nb-black);
+    padding: 0.8rem; box-shadow: var(--nb-shadow-md); text-align: center; width: 100%; max-width: 280px;
+  }
+  .gui-avatar-img {
+    width: 100%; height: 240px; object-fit: cover;
+    border: 2px solid var(--nb-black); margin-bottom: 0.8rem;
+  }
+  .gui-avatar-caption strong { display: block; font-family: var(--font-heading); font-size: 0.95rem; font-weight: 800; }
+  .gui-avatar-caption span { font-size: 0.75rem; font-family: var(--font-mono); opacity: 0.7; }
+
+  /* Neubrutalism Cards Grid */
+  .gui-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 1.5rem; }
+  .nb-card {
+    border: var(--nb-stroke) solid var(--nb-black); padding: 1.5rem;
+    box-shadow: var(--nb-shadow-md); transition: transform 0.15s;
+  }
+  .nb-card:hover { transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-lg); }
+  .nb-card-yellow { background: var(--nb-yellow); }
+  .nb-card-lavender { background: var(--nb-lavender); }
+  .nb-card-sky { background: var(--nb-sky); }
+  .nb-card-coral { background: var(--nb-coral); }
+
+  .nb-card-header {
+    display: flex; justify-content: space-between; align-items: center;
+    border-bottom: 2px solid var(--nb-black); padding-bottom: 0.6rem; margin-bottom: 1rem;
+  }
+  .nb-card-header h2 { font-family: var(--font-heading); font-size: 1.1rem; font-weight: 800; }
+  .nb-card-tag {
+    background: var(--nb-black); color: var(--nb-white);
+    padding: 0.15rem 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  }
+
+  .gui-info-list { display: flex; flex-direction: column; gap: 0.5rem; font-size: 0.88rem; }
+  .gui-info-item { display: flex; flex-direction: column; }
+  .info-label { font-family: var(--font-mono); font-size: 0.68rem; font-weight: 700; opacity: 0.7; text-transform: uppercase; }
+  .info-val { font-weight: 700; }
+
+  .gui-skills-container { display: flex; flex-direction: column; gap: 1rem; }
+  .gui-skill-meta { display: flex; justify-content: space-between; font-size: 0.85rem; font-weight: 700; margin-bottom: 0.3rem; }
+  .gui-progress-bar {
+    background: var(--nb-white); border: 2px solid var(--nb-black);
+    height: 20px; box-shadow: 2px 2px 0 0 var(--nb-black);
+  }
+  .gui-progress-fill { height: 100%; border-right: 2px solid var(--nb-black); }
+  .gui-progress-fill.coral { background: var(--nb-coral); }
+  .gui-progress-fill.sky { background: var(--nb-sky); }
+  .gui-progress-fill.yellow { background: var(--nb-yellow); }
+
+  .gui-asset-list { display: flex; flex-direction: column; gap: 0.7rem; }
+  .gui-asset-link {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: var(--nb-white); border: 2px solid var(--nb-black);
+    padding: 0.7rem 0.9rem; text-decoration: none; color: var(--nb-black);
+    box-shadow: 3px 3px 0 0 var(--nb-black); transition: all 0.15s;
+  }
+  .gui-asset-link:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--nb-black); background: var(--nb-yellow); }
+  .asset-icon { font-size: 1.4rem; }
+  .asset-details { flex: 1; display: flex; flex-direction: column; }
+  .asset-details strong { font-size: 0.85rem; font-weight: 800; }
+  .asset-details small { font-size: 0.7rem; opacity: 0.7; }
+  .nb-mini-btn {
+    background: var(--nb-black); color: var(--nb-white);
+    padding: 0.2rem 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
+  }
+
+  .gui-link-grid { display: flex; flex-direction: column; gap: 0.7rem; }
+  .gui-social-btn {
+    display: flex; align-items: center; gap: 0.8rem;
+    background: var(--nb-white); border: 2px solid var(--nb-black);
+    padding: 0.8rem 1rem; text-decoration: none; color: var(--nb-black); font-family: var(--font-heading);
+    font-weight: 800; font-size: 0.9rem; box-shadow: 3px 3px 0 0 var(--nb-black); transition: all 0.15s;
+  }
+  .gui-social-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--nb-black); background: var(--nb-yellow); }
+
+  @media (max-width: 768px) {
+    .gui-hero { grid-template-columns: 1fr; }
+    .gui-grid { grid-template-columns: 1fr; }
+  }
+</style>
+
+<script type="module">
+  // --- Terminal content data ---
+  const bootSequence = [
+    { text: '', delay: 0, skip: true },
+    { text: '[FAJRI-OS // ASTRO ENGINE INITIALIZED]', delay: 0, cls: 'highlight-purple' },
+    { text: 'STATUS: ONLINE // PORT: 4321 // <span class="success">200 OK</span>', delay: 0, cls: 'highlight' },
+    { text: '', delay: 80, skip: true },
+    { text: 'BOOTING TERMINAL … ██████████ (100%)', delay: 0, cls: 'highlight-cyan' },
+    { text: 'INITIALIZING HUD… CYBERPUNK THEME ACTIVE', delay: 0, cls: 'success' },
+    { text: 'MOUNTING /assets/ — 7 files indexed', delay: 0, cls: 'highlight-pink' },
+    { text: 'CONNECTING TO GITHUB.COM/LAZENFAJRI …', delay: 0, cls: 'highlight' },
+    { text: 'CONNECTION ESTABLISHED // TLS 1.3 // SECURE', delay: 0, cls: 'success' },
+    { text: '', delay: 80, skip: true },
+    { text: '[SYS_PROFILE]', delay: 0, cls: 'tag-sys' },
+    { text: 'AGENT_ID  : <span class="highlight-pink">FAJRI-OS [v2026.08]</span>', delay: 0 },
+    { text: 'HOST_NAME : <span class="highlight">Muhammad Fajri Setyawan (LazenFajri)</span>', delay: 0 },
+    { text: 'MAJOR     : <span class="highlight">Teknik Informatika @ UDINUS</span>', delay: 0 },
+    { text: 'ALUMNUS   : <span class="highlight">SMKN 7 Semarang</span>', delay: 0 },
+    { text: '', delay: 80, skip: true },
+    { text: '[SYSTEM READY] — Interactive mode. Type a command.', delay: 0, cls: 'success' },
+  ];
+
+  const skillsData = {
+    title: '[01 // SKILLS]',
+    tag: 'tag-sys',
+    lines: [
+      '',
+      '<span class="dim">TECH_STACK & PROFICIENCY</span>',
+      '',
+      'After Effects (VFX/Motion)      <span class="highlight-pink">[SEMI-PRO]</span>',
+      'Agent Prompting        <span class="highlight-cyan">[SEMI-PRO]</span>',
+      'Coding Fundamentals           <span class="highlight-purple">[BASIC]</span>',
+      '',
+      'Proficiency: [SEMI-PRO] ████████░░ 80%  |  [BASIC] ████░░░░░░ 40%',
+    ]
+  };
+
+  const assetsData = {
+    title: '[02 // ASSETS / LICENSE]',
+    tag: 'tag-asset',
+    lines: [
+      '',
+      '<span class="dim">LOCAL ASTRO ASSETS DIRECTORY — VERIFIED & MOUNTED</span>',
+      '',
+      '<span class="highlight">Location:</span> <span class="dim">/assets/ (public mount)</span>',
+      '<span class="highlight">Status:</span>  <span class="success">VERIFIED & MOUNTED</span>',
+      '',
+    ]
+  };
+
+  const assetFiles = [
+    { name: 'CCNA License.pdf', icon: '📄', size: '371.4 KB' },
+    { name: 'Java Fundametals license.pdf', icon: '📄', size: '91.4 KB' },
+    { name: 'PC, Hardware, and Software License.pdf', icon: '📄', size: '215.4 KB' },
+    { name: 'logo-udinus.png', icon: '🖼️', size: '97.5 KB' },
+    { name: 'Muhammad Fajri Setyawan.png', icon: '🖼️', size: '3.8 MB' },
+    { name: 'LinkedIn_icon.svg', icon: '🎨', size: '1.1 KB' },
+    { name: 'Octicons-mark-github.svg', icon: '🎨', size: '968 B' },
+    { name: 'Youtube_logo.png', icon: '🎨', size: '9.6 KB' },
+  ];
+
+  const linksData = {
+    title: '[03 // LINKS]',
+    tag: 'tag-prof',
+    lines: [
+      '',
+      '<span class="dim">EXTERNAL NODES</span>',
+      '',
+    ]
+  };
+
+  const linkItems = [
+    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-fajri-setyawan-51100726b', icon: '💼' },
+    { name: 'GitHub', url: 'https://github.com/LazenFajri', icon: '🐙' },
+    { name: 'YouTube', url: 'https://youtube.com/@fajriaep580?si=5w38K4YjcdZ-uHCX', icon: '▶️' },
+  ];
+
+  function fmtTime() {
+    const d = new Date();
+    const pad = (n) => n.toString().padStart(2, '0');
+    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
+  }
+
+  function createLine(text, cls, delayIdx) {
+    const spans = document.createElement('div');
+    spans.className = 'line line-delay-' + delayIdx;
+    if (cls) {
+      const tagMatch = cls.match(/^tag-/);
+      if (tagMatch) {
+        const tag = document.createElement('span');
+        tag.className = cls;
+        const nameMap = {
+          'tag-sys': '[SYS_INFO]',
+          'tag-prof': '[USER_PROFILE]',
+          'tag-asset': '[ASTRO_ASSETS]',
+          'tag-ok': '[OK]',
+          'tag-warn': '[WARN]',
+        };
+        tag.textContent = nameMap[cls] || '[' + cls + ']';
+        spans.appendChild(tag);
+      } else {
+        spans.classList.add(cls);
+      }
+    }
+    if (text) { spans.innerHTML += text; }
+    return spans;
+  }
+
+  function runBootSequence() {
+    const body = document.getElementById('terminal-body');
+    body.innerHTML = '';
+    let idx = 0; let lineIndex = 0;
+    function nextLine() {
+      if (idx >= bootSequence.length) { addPrompt(); return; }
+      const entry = bootSequence[idx]; idx++;
+      if (entry.skip) { setTimeout(nextLine, entry.delay || 100); return; }
+      const lineEl = createLine(entry.text, entry.cls, Math.min(lineIndex, 15));
+      body.appendChild(lineEl); lineIndex++;
+      body.scrollTop = body.scrollHeight;
+      setTimeout(nextLine, entry.delay || 300);
+    }
+    nextLine();
+  }
+
+  function addPrompt() {
+    const body = document.getElementById('terminal-body');
+    const prompt = document.createElement('div');
+    prompt.className = 'line';
+    prompt.innerHTML = '<span class="dim">[' + fmtTime() + ']</span> <span class="input-prompt">fajri$</span> <span class="dim">Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE</span>';
+    body.appendChild(prompt);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function outputLine(text, cls) {
+    const body = document.getElementById('terminal-body');
+    const lineIndex = body.children.length;
+    const lineEl = createLine(text, cls, 0);
+    lineEl.style.animationDelay = '0ms';
+    body.appendChild(lineEl);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function outputDivider() {
+    const body = document.getElementById('terminal-body');
+    const div = document.createElement('div');
+    div.className = 'divider';
+    div.textContent = '----------------------------------------';
+    body.appendChild(div);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function clearOutput() {
+    const body = document.getElementById('terminal-body');
+    body.innerHTML = '';
+    addPrompt();
+  }
+
+  function handleCommand(cmd) {
+    const body = document.getElementById('terminal-body');
+    const echo = document.createElement('div');
+    echo.className = 'line';
+    echo.innerHTML = '<span class="highlight-pink">fajri$</span> ' + escapeHtml(cmd);
+    body.appendChild(echo);
+    body.scrollTop = body.scrollHeight;
+
+    const c = cmd.trim().toLowerCase();
+
+    if (c === '' || c === 'help' || c === 'h' || c === '?') { showHelp(); }
+    else if (c === '1' || c === 'skills' || c === 'skill') { showSkills(); }
+    else if (c === '2' || c === 'assets' || c === 'license' || c === 'cert') { showAssets(); }
+    else if (c === '3' || c === 'links' || c === 'social' || c === 'connect') { showLinks(); }
+    else if (c === '4' || c === 'profile' || c === 'about' || c === 'whoami') { showProfile(); }
+    else if (c === 'makan' || c === 'hobby' || c === 'eat') { showMakan(); }
+    else if (c === '4321' || c === 'port') { showPortStatus(); }
+    else if (c === 'clear' || c === 'cls') { clearOutput(); return; }
+    else {
+      outputLine('[ERROR] Unknown command: <span class="highlight-pink">' + escapeHtml(cmd) + '</span>', 'tag-warn');
+      outputLine('<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>', 'dim');
+    }
+    addPrompt();
+  }
+
+  function escapeHtml(text) {
+    const div = document.createElement('div');
+    div.textContent = text;
+    return div.innerHTML;
+  }
+
+  function showHelp() {
+    outputLine('<span class="success">[OK]</span> Available commands:', 'tag-ok');
+    outputLine('  [1] SKILLS           — View tech stack & proficiency', '');
+    outputLine('  [2] ASSETS/LICENSE   — Browse local Astro assets', '');
+    outputLine('  [3] LINKS            — Social & GitHub nodes', '');
+    outputLine('  [4] PROFILE          — Fajri\'s profile card', '');
+    outputLine('  [makan]              — Personal hobby (food!)', '');
+    outputLine('  [clear]              — Clear terminal', '');
+    outputLine('  [help]               — This help', '');
+  }
+
+  function showSkills() {
+    outputLine(skillsData.title, 'tag-sys');
+    outputDivider();
+    for (const line of skillsData.lines) { outputLine(line); }
+
+    const body = document.getElementById('terminal-body');
+    const isGui = document.getElementById('fajri-terminal').dataset.mode === 'gui';
+
+    const skillDefs = [
+      { name: 'After Effects', level: 'SEMI-PRO', pct: 80, className: isGui ? 'ae' : '', color: isGui ? 'var(--nb-coral)' : 'var(--accent-pink)' },
+      { name: 'Agent Prompting', level: 'SEMI-PRO', pct: 80, className: isGui ? 'hermes' : '', color: isGui ? 'var(--nb-sky)' : 'var(--accent-cyan)' },
+      { name: 'Coding Fundamentals', level: 'BASIC', pct: 40, className: isGui ? 'coding' : '', color: isGui ? 'var(--nb-lavender)' : 'var(--accent-purple)' },
+    ];
+
+    skillDefs.forEach((skill, i) => {
+      setTimeout(() => {
+        const wrapper = document.createElement('div');
+        wrapper.className = 'skill-bar';
+        wrapper.innerHTML = '<div class="skill-name"><span>' + skill.name + '</span><span class="level-label">[' + skill.level + '] ' + skill.pct + '%</span></div>';
+        const track = document.createElement('div');
+        track.className = 'skill-track';
+        const fill = document.createElement('div');
+        fill.className = 'skill-fill' + (skill.className ? ' ' + skill.className : '');
+        fill.style.width = '0%';
+        if (!isGui) { fill.style.backgroundColor = skill.color; }
+        const barText = document.createElement('span');
+        barText.className = 'bar-text';
+        barText.textContent = skill.pct + '%';
+        fill.appendChild(barText);
+        track.appendChild(fill);
+        wrapper.appendChild(track);
+        body.appendChild(wrapper);
+        body.scrollTop = body.scrollHeight;
+        setTimeout(() => { fill.style.width = skill.pct + '%'; }, 100);
+      }, i * 400);
+    });
+  }
+
+  function showAssets() {
+    outputLine(assetsData.title, 'tag-asset');
+    outputDivider();
+    for (const line of assetsData.lines) { outputLine(line); }
+
+    const body = document.getElementById('terminal-body');
+    setTimeout(() => {
+      const grid = document.createElement('div');
+      grid.className = 'asset-grid';
+      assetFiles.forEach((file) => {
+        const item = document.createElement('div');
+        item.className = 'asset-item';
+        item.innerHTML = '<span class="asset-icon">' + file.icon + '</span><span class="asset-name">' + file.name + '</span><span class="asset-size dim">' + file.size + '</span>';
+        grid.appendChild(item);
+      });
+      body.appendChild(grid);
+      body.scrollTop = body.scrollHeight;
+
+      setTimeout(() => {
+        const linkNote = document.createElement('div');
+        linkNote.className = 'line';
+        linkNote.innerHTML = '<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: <a href="https://github.com/LazenFajri" class="highlight">github.com/LazenFajri</a></span>';
+        body.appendChild(linkNote);
+        body.scrollTop = body.scrollHeight;
+      }, 200);
+    }, 100);
+  }
+
+  function showLinks() {
+    outputLine(linksData.title, 'tag-prof');
+    outputDivider();
+    for (const line of linksData.lines) { outputLine(line); }
+
+    const body = document.getElementById('terminal-body');
+    setTimeout(() => {
+      const grid = document.createElement('div');
+      grid.className = 'link-grid';
+      linkItems.forEach((link) => {
+        const item = document.createElement('a');
+        item.className = 'link-item';
+        item.href = link.url;
+        item.target = '_blank';
+        item.rel = 'noopener noreferrer';
+        item.innerHTML = '<span class="link-icon">' + link.icon + '</span><span class="link-text">' + link.name + '</span><span class="link-url dim">' + new URL(link.url).hostname + '</span>';
+        grid.appendChild(item);
+      });
+      body.appendChild(grid);
+      body.scrollTop = body.scrollHeight;
+
+      setTimeout(() => {
+        const note = document.createElement('div');
+        note.className = 'line';
+        note.innerHTML = '<span class="dim">🔗 <span class="makan">Check out my YouTube @fajriaep580 for After Effects work!</span></span>';
+        body.appendChild(note);
+        body.scrollTop = body.scrollHeight;
+      }, 200);
+    }, 100);
+  }
+
+  function showProfile() {
+    outputLine('<span class="highlight-purple">[04 // PROFILE]</span>', 'tag-prof');
+    outputDivider();
+
+    const body = document.getElementById('terminal-body');
+    const grid = document.createElement('div');
+    grid.className = 'profile-grid';
+    grid.innerHTML =
+      '<img src="/assets/Muhammad Fajri Setyawan.png" alt="Muhammad Fajri Setyawan" class="profile-pic" width="120" height="120" loading="eager" decoding="async" />' +
+      '<div class="profile-details">' +
+        '<div><span class="label">Nama Lengkap</span><br/><span class="value highlight">Muhammad Fajri Setyawan</span></div>' +
+        '<div><span class="label">Username</span><br/><span class="value highlight-pink">LazenFajri</span> <span class="badge badge-coder">CODER</span></div>' +
+        '<div><span class="label">Status</span><br/><span class="value">Undergraduate Student (Mahasiswa)</span> <span class="badge badge-student">STUDENT</span></div>' +
+        '<div><span class="label">Institution</span><br/><span class="value">Universitas Dian Nuswarmantoro (UDINUS)</span></div>' +
+        '<div><span class="label">Major</span><br/><span class="value">Teknik Informatika (Informatics Engineering)</span></div>' +
+        '<div><span class="label">Prior Education</span><br/><span class="value">SMK Negeri 7 Semarang</span></div>' +
+        '<div><span class="label">Hobby</span><br/><span class="value makan">Food & Culinary Exploration ("Makan") 🍲</span></div>' +
+        '<div><span class="label">Agent</span><br/><span class="value dim">FAJRI-OS v2026.08 — AI Terminal Agent</span></div>' +
+      '</div>';
+    body.appendChild(grid);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  function showMakan() {
+    const foods = ['🍜 Ramen', '🍕 Pizza', '🍔 Burger', '🍣 Sushi', '🌮 Tacos', '🍝 Pasta', '🍗 Fried Chicken', '🥘 Nasi Goreng', '🍩 Donuts', '🍰 Cake'];
+    const randomFood = foods[Math.floor(Math.random() * foods.length)];
+    outputLine('[MAKUAN AGENT] Fajri\'s current makan craving: <span class="makan">' + randomFood + '</span>', 'tag-warn');
+    outputLine('<span class="dim">Pro tip: Ask him about the best warung in <span class="highlight">Semarang</span> — he knows the spots.</span>', 'dim');
+  }
+
+  function showPortStatus() {
+    outputLine('[PORT 4321] <span class="success">ACTIVE</span> // STATUS: 200 OK', 'tag-ok');
+    outputLine('<span class="dim">Listening on: <span class="highlight">localhost:4321</span></span>', 'dim');
+    outputLine('<span class="dim">TLS: <span class="success">ENABLED</span> | Engine: <span class="highlight-cyan">ASTRO</span> | Mode: <span class="highlight-purple">SERVER</span></span>', 'dim');
+  }
+
+  document.addEventListener('DOMContentLoaded', function() {
+    runBootSequence();
+
+    const input = document.getElementById('terminal-input');
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter') {
+        const cmd = input.value;
+        input.value = '';
+        if (cmd.trim()) { handleCommand(cmd); }
+      }
+      if (e.key === 'Tab') { e.preventDefault(); input.value = 'help'; }
+    });
+
+    // Mode toggle (Terminal <-> Neubrutalist GUI)
+    const modeToggle = document.getElementById('mode-toggle');
+    const guiModeToggle = document.getElementById('gui-mode-toggle');
+    const root = document.getElementById('fajri-terminal');
+    
+    function toggleMode() {
+      const isGui = root.dataset.mode === 'gui';
+      root.dataset.mode = isGui ? 'terminal' : 'gui';
+      if (modeToggle) {
+        modeToggle.classList.toggle('active', !isGui);
+        const icon = modeToggle.querySelector('.mode-icon');
+        const label = modeToggle.querySelector('.mode-label');
+        if (icon) icon.textContent = !isGui ? '▣' : '□';
+        if (label) label.textContent = !isGui ? 'TERM' : 'GUI';
+      }
+    }
+
+    if (modeToggle) modeToggle.addEventListener('click', toggleMode);
+    if (guiModeToggle) guiModeToggle.addEventListener('click', toggleMode);
+
+    // Parallax Scroll & Mousemove Effects for GUI Mode
+    const guiContainer = document.getElementById('neubrutalism-gui');
+    if (guiContainer) {
+      // 1. Mouse move 3D tilt effect on GUI Hero and Cards
+      guiContainer.addEventListener('mousemove', function(e) {
+        if (root.dataset.mode !== 'gui') return;
+        const rect = guiContainer.getBoundingClientRect();
+        const mouseX = e.clientX - rect.left - rect.width / 2;
+        const mouseY = e.clientY - rect.top - rect.height / 2;
+
+        document.querySelectorAll('.parallax-shape').forEach(shape => {
+          const speed = parseFloat(shape.getAttribute('data-speed')) || 0.1;
+          shape.style.transform = `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) rotate(${mouseX * 0.02}deg)`;
+        });
+      });
+
+      // 2. Scroll Parallax
+      window.addEventListener('scroll', function() {
+        if (root.dataset.mode !== 'gui') return;
+        const scrolled = window.scrollY;
+        document.querySelectorAll('#neubrutalism-gui [data-speed]').forEach(el => {
+          const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
+          const yPos = -(scrolled * speed);
+          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+        });
+      });
+    }
+
+    input.focus();
+  });
+
+  // --- p5.js Interactive Dual-Mode Canvas (Cyberpunk CLI & Neubrutalism GUI) ---
+  if (typeof window !== 'undefined') {
+    const initP5 = () => {
+      if (!window.p5) return;
+      new window.p5(p => {
+        let particles = [];
+        const particleCount = 40;
+
+        p.setup = () => {
+          const canvas = p.createCanvas(window.innerWidth, window.innerHeight);
+          canvas.parent('p5-bg-canvas');
+          p.pixelDensity(1);
+
+          for (let i = 0; i < particleCount; i++) {
+            particles.push({
+              x: p.random(p.width),
+              y: p.random(p.height),
+              vx: p.random(-0.7, 0.7),
+              vy: p.random(-0.7, 0.7),
+              size: p.random(8, 20),
+              shapeType: Math.floor(p.random(0, 3)),
+              colorIdx: Math.floor(p.random(0, 5)),
+              angle: p.random(p.TWO_PI),
+              spin: p.random(-0.02, 0.02)
+            });
+          }
+        };
+
+        p.draw = () => {
+          p.clear();
+          const root = document.getElementById('fajri-terminal');
+          const isGui = root && root.dataset.mode === 'gui';
+
+          const guiColors = ['#FFD23F', '#FF6B6B', '#74B9FF', '#B8A9FA', '#88D498'];
+          const cliColors = ['rgba(0, 240, 255, 0.5)', 'rgba(255, 46, 149, 0.5)', 'rgba(138, 43, 226, 0.5)'];
+
+          particles.forEach((pt, i) => {
+            pt.x += pt.vx;
+            pt.y += pt.vy;
+            pt.angle += pt.spin;
+
+            if (pt.x < 0 || pt.x > p.width) pt.vx *= -1;
+            if (pt.y < 0 || pt.y > p.height) pt.vy *= -1;
+
+            // Interactive mouse repulsion
+            let dx = p.mouseX - pt.x;
+            let dy = p.mouseY - pt.y;
+            let dist = Math.sqrt(dx * dx + dy * dy);
+            if (dist < 130 && dist > 0) {
+              pt.x -= (dx / dist) * 2.5;
+              pt.y -= (dy / dist) * 2.5;
+            }
+
+            p.push();
+            p.translate(pt.x, pt.y);
+            p.rotate(pt.angle);
+
+            if (isGui) {
+              // Neubrutalism mode: bold black outline, solid vibrant shapes
+              p.stroke(0);
+              p.strokeWeight(2.5);
+              p.fill(guiColors[pt.colorIdx % guiColors.length]);
+
+              if (pt.shapeType === 0) {
+                p.circle(0, 0, pt.size * 1.3);
+              } else if (pt.shapeType === 1) {
+                p.rectMode(p.CENTER);
+                p.rect(0, 0, pt.size * 1.2, pt.size * 1.2);
+              } else {
+                p.triangle(-pt.size * 0.8, pt.size * 0.8, pt.size * 0.8, pt.size * 0.8, 0, -pt.size * 0.8);
+              }
+            } else {
+              // Cyberpunk CLI mode: glowing connecting data nodes
+              p.noStroke();
+              p.fill(cliColors[pt.colorIdx % cliColors.length]);
+              p.circle(0, 0, pt.size * 0.55);
+
+              // Connect nearby nodes with glowing line segments
+              for (let j = i + 1; j < particles.length; j++) {
+                let other = particles[j];
+                let d = p.dist(pt.x, pt.y, other.x, other.y);
+                if (d < 120) {
+                  p.stroke('rgba(0, 240, 255, ' + (0.3 * (1 - d / 120)) + ')');
+                  p.strokeWeight(1);
+                  p.line(0, 0, other.x - pt.x, other.y - pt.y);
+                }
+              }
+            }
+            p.pop();
+          });
+        };
+
+        p.windowResized = () => p.resizeCanvas(window.innerWidth, window.innerHeight);
+      });
+    };
+
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(initP5, 200);
+    } else {
+      window.addEventListener('DOMContentLoaded', () => setTimeout(initP5, 200));
+    }
+  }
+</script>
