@@ -44,7 +44,7 @@ import { Image } from 'astro:assets';
   <div id="neubrutalism-gui" class="gui-container">
     <header class="gui-header">
       <div class="gui-brand">
-        <img src="/assets/Logo.png" alt="UDINUS Logo" class="gui-brand-logo" width="36" height="36" />
+        <img src="/assets/MyLogo.png" alt="UDINUS Logo" class="gui-brand-logo" width="36" height="36" />
         <div class="gui-brand-text">
           <span class="gui-brand-title">MUHAMMAD FAJRI SETYAWAN</span>
           <span class="gui-brand-sub">UDINUS • TEKNIK INFORMATIKA 2026</span>
@@ -221,6 +221,25 @@ import { Image } from 'astro:assets';
             <img src="/assets/LinkedIn_icon.svg" alt="LinkedIn" width="22" height="22" />
             <span>LinkedIn (Fajri Setyawan)</span>
           </a>
+        </div>
+      </section>
+
+      <section id="gui-snake" class="nb-card nb-card-snake" data-speed="0.04">
+        <div class="nb-card-header">
+          <h2><span class="material-symbols-outlined section-icon">conversion_path</span> GITHUB CONTRIBUTIONS</h2>
+          <span class="nb-card-tag">ACTIVITY</span>
+        </div>
+        <div class="gui-snake-wrap">
+          <picture>
+            <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/LazenFajri/Portofolio/output/github-contribution-grid-snake-dark.svg" />
+            <img
+              src="https://raw.githubusercontent.com/LazenFajri/Portofolio/output/github-contribution-grid-snake.svg"
+              alt="GitHub Contribution Snake Animation LazenFajri"
+              class="gui-snake-img"
+              loading="lazy"
+              onerror="this.closest('.gui-snake-wrap').innerHTML='<p class=\'snake-pending\'>🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.</p>'"
+            />
+          </picture>
         </div>
       </section>
     </div>
@@ -665,6 +684,39 @@ import { Image } from 'astro:assets';
 
   .gui-hero, .nb-card { position: relative; z-index: 1; transition: transform 0.15s ease-out, box-shadow 0.15s ease-out; }
 
+  /* Snake Contribution Card */
+  .nb-card-snake {
+    background: #1a1a2e;
+    border: 3px solid var(--nb-black);
+    box-shadow: var(--nb-shadow-md);
+    padding: 1.2rem;
+    grid-column: 1 / -1;
+  }
+  .nb-card-snake .nb-card-header h2 { color: #88D498; }
+  .nb-card-snake .nb-card-tag { background: #88D498; color: #000; }
+  .gui-snake-wrap {
+    width: 100%;
+    overflow: hidden;
+    border: 2px solid var(--nb-black);
+    background: #0d1117;
+    padding: 0.5rem;
+    margin-top: 0.75rem;
+  }
+  .gui-snake-img {
+    width: 100%;
+    height: auto;
+    display: block;
+    image-rendering: pixelated;
+  }
+  .snake-pending {
+    text-align: center;
+    padding: 2rem 1rem;
+    color: #88D498;
+    font-family: var(--font-mono);
+    font-size: 0.85rem;
+    opacity: 0.7;
+  }
+
   /* ============================================================
      RELOAD / ENTRANCE ANIMATIONS (CLI & GUI)
      ============================================================ */
@@ -755,6 +807,9 @@ import { Image } from 'astro:assets';
   }
   .terminal-root[data-mode="gui"] #gui-links {
     animation: nbCardEntry 0.5s 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
+  }
+  .terminal-root[data-mode="gui"] #gui-snake {
+    animation: nbCardEntry 0.5s 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
   }
 
   @keyframes nbSlideDown {
@@ -1017,7 +1072,7 @@ import { Image } from 'astro:assets';
     { name: 'CCNA License.pdf', icon: '📄', size: '371.4 KB' },
     { name: 'Java Fundametals license.pdf', icon: '📄', size: '91.4 KB' },
     { name: 'PC, Hardware, and Software License.pdf', icon: '📄', size: '215.4 KB' },
-    { name: 'Logo.png', icon: '🖼️', size: '97.5 KB' },
+    { name: 'MyLogo.png', icon: '🖼️', size: '97.5 KB' },
     { name: 'Muhammad Fajri Setyawan.png', icon: '🖼️', size: '3.8 MB' },
     { name: 'LinkedIn_icon.svg', icon: '🎨', size: '1.1 KB' },
     { name: 'Octicons-mark-github.svg', icon: '🎨', size: '968 B' },
