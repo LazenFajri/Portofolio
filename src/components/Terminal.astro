@@ -140,37 +140,53 @@ import { Image } from 'astro:assets';
           <span class="nb-card-tag">SKILLS</span>
         </div>
         <div class="gui-skills-container">
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">movie</span> After Effects Video Editing</span>
-              <strong>[SEMI-PRO] 80%</strong>
-            </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill coral" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">smart_toy</span> Agent Prompting</span>
-              <strong>[SEMI-PRO] 80%</strong>
-            </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill sky" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">code</span> Coding Fundamentals</span>
-              <strong>[BASIC] 40%</strong>
-            </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill yellow" style="width: 40%;"></div>
-            </div>
-          </div>
-        </div>
-      </section>
+                  <div class="gui-skill-item">
+                    <div class="gui-skill-meta">
+                      <span><span class="material-symbols-outlined skill-icon">movie</span> After Effects Video Editing</span>
+                      <strong>[SEMI-PRO] 80%</strong>
+                    </div>
+                    <div class="gui-progress-bar">
+                      <div class="gui-progress-fill coral" style="width: 80%;"></div>
+                    </div>
+                  </div>
+                  <div class="gui-skill-item">
+                    <div class="gui-skill-meta">
+                      <span><span class="material-symbols-outlined skill-icon">smart_toy</span> Agent Prompting</span>
+                      <strong>[SEMI-PRO] 80%</strong>
+                    </div>
+                    <div class="gui-progress-bar">
+                      <div class="gui-progress-fill sky" style="width: 80%;"></div>
+                    </div>
+                  </div>
+                  <div class="gui-skill-item">
+                    <div class="gui-skill-meta">
+                      <span><span class="material-symbols-outlined skill-icon">code</span> Coding Fundamentals</span>
+                      <strong>[BASIC] 40%</strong>
+                    </div>
+                    <div class="gui-progress-bar">
+                      <div class="gui-progress-fill yellow" style="width: 40%;"></div>
+                    </div>
+                  </div>
+                                  </div>
+                                  <!-- GitHub Snake Matrix - Neubrutalism Style -->
+                                  <div class="nb-card nb-card-green gui-snake-matrix" style="margin-top: 1.5rem;">
+                                    <div class="nb-card-header">
+                                      <h2><span class="material-symbols-outlined section-icon">extension</span> GITHUB ACTIVITY MATRIX</h2>
+                                      <span class="nb-card-tag">SNAKE</span>
+                                    </div>
+                                    <div class="snake-matrix-wrapper">
+                                      <img 
+                                        src="https://raw.githubusercontent.com/LazenFajri/Portofolio/output/github-contribution-grid-snake.svg" 
+                                        alt="GitHub Contribution Snake Animation"
+                                        class="snake-matrix-img"
+                                        loading="lazy"
+                                        decoding="async"
+                                      />
+                                    </div>
+                                  </div>
+                                </section>
 
-      <section id="gui-assets" class="nb-card nb-card-sky" data-speed="0.08">
+                        <section id="gui-assets" class="nb-card nb-card-sky" data-speed="0.08">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">workspace_premium</span> SERTIFIKAT & LISENSI</h2>
           <span class="nb-card-tag">DOWNLOADS</span>
@@ -904,6 +920,24 @@ import { Image } from 'astro:assets';
   .nb-card-lavender { background: var(--nb-lavender); }
   .nb-card-sky { background: var(--nb-sky); }
   .nb-card-coral { background: var(--nb-coral); }
+  .nb-card-green { background: var(--nb-green); }
+
+  /* Snake Matrix Wrapper */
+  .gui-snake-matrix { overflow: hidden; }
+  .snake-matrix-wrapper {
+    border: var(--nb-stroke) solid var(--nb-black);
+    background: var(--nb-white);
+    border-radius: var(--nb-radius);
+    box-shadow: inset var(--nb-shadow-sm);
+    overflow: hidden;
+  }
+  .snake-matrix-img {
+    display: block;
+    width: 100%;
+    height: auto;
+    max-height: 400px;
+    object-fit: contain;
+  }
 
   .nb-card-header {
     display: flex; justify-content: space-between; align-items: center;
