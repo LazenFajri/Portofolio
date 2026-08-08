@@ -1019,297 +1019,142 @@ import { Image } from 'astro:assets';
 </style>
 
 <script type="module">
-  // --- Terminal content data ---
-  const bootSequence = [
-    { text: '', delay: 0, skip: true },
-    { text: '[FAJRI-OS // ASTRO ENGINE INITIALIZED]', delay: 0, cls: 'highlight-purple' },
-    { text: 'STATUS: ONLINE // PORT: 4321 // <span class="success">200 OK</span>', delay: 0, cls: 'highlight' },
-    { text: '', delay: 80, skip: true },
-    { text: 'BOOTING TERMINAL … ██████████ (100%)', delay: 0, cls: 'highlight-cyan' },
-    { text: 'INITIALIZING HUD… CYBERPUNK THEME ACTIVE', delay: 0, cls: 'success' },
-    { text: 'MOUNTING /assets/ — 7 files indexed', delay: 0, cls: 'highlight-pink' },
-    { text: 'CONNECTING TO GITHUB.COM/LAZENFAJRI …', delay: 0, cls: 'highlight' },
-    { text: 'CONNECTION ESTABLISHED // TLS 1.3 // SECURE', delay: 0, cls: 'success' },
-    { text: '', delay: 80, skip: true },
-    { text: '[SYS_PROFILE]', delay: 0, cls: 'tag-sys' },
-    { text: 'AGENT_ID  : <span class="highlight-pink">FAJRI-OS [v2026.08]</span>', delay: 0 },
-    { text: 'HOST_NAME : <span class="highlight">Muhammad Fajri Setyawan (LazenFajri)</span>', delay: 0 },
-    { text: 'MAJOR     : <span class="highlight">Teknik Informatika @ UDINUS</span>', delay: 0 },
-    { text: 'ALUMNUS   : <span class="highlight">SMKN 7 Semarang</span>', delay: 0 },
-    { text: '', delay: 80, skip: true },
-    { text: '[SYSTEM READY] — Interactive mode. Type a command.', delay: 0, cls: 'success' },
-  ];
+  import {
+    bootSequence,
+    skillsData,
+    assetsData,
+    linksData,
+    foods,
+    helpLines,
+    getSkillDefs,
+  } from '../lib/terminal-data.js';
+  import {
+    escapeHtml,
+    lineDelayIndex,
+    modeToggleLabels,
+    nextMode,
+    parseSpeed,
+    pickRandom,
+    resolveCommand,
+    scrollTransform,
+    shapeTransform,
+    bounceVelocity,
+    repel,
+  } from '../lib/terminal-utils.js';
+  import {
+    appendAndScroll,
+    createAssetGrid,
+    createDivider,
+    createEcho,
+    createLine,
+    createLinkGrid,
+    createNote,
+    createProfileGrid,
+    createPrompt,
+    createSkillBar,
+  } from '../lib/terminal-dom.js';
 
-  const skillsData = {
-    title: '[01 // SKILLS]',
-    tag: 'tag-sys',
-    lines: [
-      '',
-      '<span class="dim">TECH_STACK & PROFICIENCY</span>',
-      '',
-      'After Effects (VFX/Motion)      <span class="highlight-pink">[SEMI-PRO]</span>',
-      'Agent Prompting        <span class="highlight-cyan">[SEMI-PRO]</span>',
-      'Coding Fundamentals           <span class="highlight-purple">[BASIC]</span>',
-      '',
-      'Proficiency: [SEMI-PRO] ████████░░ 80%  |  [BASIC] ████░░░░░░ 40%',
-    ]
-  };
-
-  const assetsData = {
-    title: '[02 // ASSETS / LICENSE]',
-    tag: 'tag-asset',
-    lines: [
-      '',
-      '<span class="dim">LOCAL ASTRO ASSETS DIRECTORY — VERIFIED & MOUNTED</span>',
-      '',
-      '<span class="highlight">Location:</span> <span class="dim">/assets/ (public mount)</span>',
-      '<span class="highlight">Status:</span>  <span class="success">VERIFIED & MOUNTED</span>',
-      '',
-    ]
-  };
-
-  const assetFiles = [
-    { name: 'CCNA License.pdf', icon: '📄', size: '371.4 KB' },
-    { name: 'Java Fundametals license.pdf', icon: '📄', size: '91.4 KB' },
-    { name: 'PC, Hardware, and Software License.pdf', icon: '📄', size: '215.4 KB' },
-    { name: 'MyLogo.png', icon: '🖼️', size: '97.5 KB' },
-    { name: 'Muhammad Fajri Setyawan.png', icon: '🖼️', size: '3.8 MB' },
-    { name: 'LinkedIn_icon.svg', icon: '🎨', size: '1.1 KB' },
-    { name: 'Octicons-mark-github.svg', icon: '🎨', size: '968 B' },
-    { name: 'Youtube_logo.png', icon: '🎨', size: '9.6 KB' },
-  ];
-
-  const linksData = {
-    title: '[03 // LINKS]',
-    tag: 'tag-prof',
-    lines: [
-      '',
-      '<span class="dim">EXTERNAL NODES</span>',
-      '',
-    ]
-  };
-
-  const linkItems = [
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-fajri-setyawan-51100726b', icon: '💼' },
-    { name: 'GitHub', url: 'https://github.com/LazenFajri', icon: '🐙' },
-    { name: 'YouTube', url: 'https://youtube.com/@fajriaep580?si=5w38K4YjcdZ-uHCX', icon: '▶️' },
-  ];
-
-  function fmtTime() {
-    const d = new Date();
-    const pad = (n) => n.toString().padStart(2, '0');
-    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-
-  function createLine(text, cls, delayIdx) {
-    const spans = document.createElement('div');
-    spans.className = 'line line-delay-' + delayIdx;
-    if (cls) {
-      const tagMatch = cls.match(/^tag-/);
-      if (tagMatch) {
-        const tag = document.createElement('span');
-        tag.className = cls;
-        const nameMap = {
-          'tag-sys': '[SYS_INFO]',
-          'tag-prof': '[USER_PROFILE]',
-          'tag-asset': '[ASTRO_ASSETS]',
-          'tag-ok': '[OK]',
-          'tag-warn': '[WARN]',
-        };
-        tag.textContent = nameMap[cls] || '[' + cls + ']';
-        spans.appendChild(tag);
-      } else {
-        spans.classList.add(cls);
-      }
-    }
-    if (text) { spans.innerHTML += text; }
-    return spans;
-  }
+  const getBody = () => document.getElementById('terminal-body');
 
   function runBootSequence() {
-    const body = document.getElementById('terminal-body');
+    const body = getBody();
     body.innerHTML = '';
     let idx = 0; let lineIndex = 0;
     function nextLine() {
       if (idx >= bootSequence.length) { addPrompt(); return; }
       const entry = bootSequence[idx]; idx++;
       if (entry.skip) { setTimeout(nextLine, entry.delay || 100); return; }
-      const lineEl = createLine(entry.text, entry.cls, Math.min(lineIndex, 15));
-      body.appendChild(lineEl); lineIndex++;
-      body.scrollTop = body.scrollHeight;
+      appendAndScroll(body, createLine(entry.text, entry.cls, lineDelayIndex(lineIndex)));
+      lineIndex++;
       setTimeout(nextLine, entry.delay || 300);
     }
     nextLine();
   }
 
   function addPrompt() {
-    const body = document.getElementById('terminal-body');
-    const prompt = document.createElement('div');
-    prompt.className = 'line';
-    prompt.innerHTML = '<span class="dim">[' + fmtTime() + ']</span> <span class="input-prompt">fajri$</span> <span class="dim">Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE</span>';
-    body.appendChild(prompt);
-    body.scrollTop = body.scrollHeight;
+    appendAndScroll(getBody(), createPrompt());
   }
 
   function outputLine(text, cls) {
-    const body = document.getElementById('terminal-body');
-    const lineIndex = body.children.length;
     const lineEl = createLine(text, cls, 0);
     lineEl.style.animationDelay = '0ms';
-    body.appendChild(lineEl);
-    body.scrollTop = body.scrollHeight;
+    appendAndScroll(getBody(), lineEl);
   }
 
   function outputDivider() {
-    const body = document.getElementById('terminal-body');
-    const div = document.createElement('div');
-    div.className = 'divider';
-    div.textContent = '----------------------------------------';
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
+    appendAndScroll(getBody(), createDivider());
   }
 
   function clearOutput() {
-    const body = document.getElementById('terminal-body');
-    body.innerHTML = '';
+    getBody().innerHTML = '';
     addPrompt();
   }
 
   function handleCommand(cmd) {
-    const body = document.getElementById('terminal-body');
-    const echo = document.createElement('div');
-    echo.className = 'line';
-    echo.innerHTML = '<span class="highlight-pink">fajri$</span> ' + escapeHtml(cmd);
-    body.appendChild(echo);
-    body.scrollTop = body.scrollHeight;
+    appendAndScroll(getBody(), createEcho(escapeHtml(cmd)));
 
-    const c = cmd.trim().toLowerCase();
-
-    if (c === '' || c === 'help' || c === 'h' || c === '?') { showHelp(); }
-    else if (c === '1' || c === 'skills' || c === 'skill') { showSkills(); }
-    else if (c === '2' || c === 'assets' || c === 'license' || c === 'cert') { showAssets(); }
-    else if (c === '3' || c === 'links' || c === 'social' || c === 'connect') { showLinks(); }
-    else if (c === '4' || c === 'profile' || c === 'about' || c === 'whoami') { showProfile(); }
-    else if (c === 'makan' || c === 'hobby' || c === 'eat') { showMakan(); }
-    else if (c === '4321' || c === 'port') { showPortStatus(); }
-    else if (c === 'clear' || c === 'cls') { clearOutput(); return; }
-    else {
-      outputLine('[ERROR] Unknown command: <span class="highlight-pink">' + escapeHtml(cmd) + '</span>', 'tag-warn');
-      outputLine('<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>', 'dim');
+    switch (resolveCommand(cmd)) {
+      case 'help': showHelp(); break;
+      case 'skills': showSkills(); break;
+      case 'assets': showAssets(); break;
+      case 'links': showLinks(); break;
+      case 'profile': showProfile(); break;
+      case 'makan': showMakan(); break;
+      case 'port': showPortStatus(); break;
+      case 'clear': clearOutput(); return;
+      default:
+        outputLine('[ERROR] Unknown command: <span class="highlight-pink">' + escapeHtml(cmd) + '</span>', 'tag-warn');
+        outputLine('<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>', 'dim');
     }
     addPrompt();
   }
 
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
-  }
-
   function showHelp() {
     outputLine('<span class="success">[OK]</span> Available commands:', 'tag-ok');
-    outputLine('  [1] SKILLS           — View tech stack & proficiency', '');
-    outputLine('  [2] ASSETS/LICENSE   — Browse local Astro assets', '');
-    outputLine('  [3] LINKS            — Social & GitHub nodes', '');
-    outputLine('  [4] PROFILE          — Fajri\'s profile card', '');
-    outputLine('  [makan]              — Personal hobby (food!)', '');
-    outputLine('  [clear]              — Clear terminal', '');
-    outputLine('  [help]               — This help', '');
+    for (const line of helpLines) { outputLine(line, ''); }
   }
 
   function showSkills() {
-    outputLine(skillsData.title, 'tag-sys');
+    outputLine(skillsData.title, skillsData.tag);
     outputDivider();
     for (const line of skillsData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
+    const body = getBody();
     const isGui = document.getElementById('fajri-terminal').dataset.mode === 'gui';
 
-    const skillDefs = [
-      { name: 'After Effects', level: 'SEMI-PRO', pct: 80, className: isGui ? 'ae' : '', color: isGui ? 'var(--nb-coral)' : 'var(--accent-pink)' },
-      { name: 'Agent Prompting', level: 'SEMI-PRO', pct: 80, className: isGui ? 'hermes' : '', color: isGui ? 'var(--nb-sky)' : 'var(--accent-cyan)' },
-      { name: 'Coding Fundamentals', level: 'BASIC', pct: 40, className: isGui ? 'coding' : '', color: isGui ? 'var(--nb-lavender)' : 'var(--accent-purple)' },
-    ];
-
-    skillDefs.forEach((skill, i) => {
+    getSkillDefs(isGui).forEach((skill, i) => {
       setTimeout(() => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'skill-bar';
-        wrapper.innerHTML = '<div class="skill-name"><span>' + skill.name + '</span><span class="level-label">[' + skill.level + '] ' + skill.pct + '%</span></div>';
-        const track = document.createElement('div');
-        track.className = 'skill-track';
-        const fill = document.createElement('div');
-        fill.className = 'skill-fill' + (skill.className ? ' ' + skill.className : '');
-        fill.style.width = '0%';
-        if (!isGui) { fill.style.backgroundColor = skill.color; }
-        const barText = document.createElement('span');
-        barText.className = 'bar-text';
-        barText.textContent = skill.pct + '%';
-        fill.appendChild(barText);
-        track.appendChild(fill);
-        wrapper.appendChild(track);
-        body.appendChild(wrapper);
-        body.scrollTop = body.scrollHeight;
+        const { wrapper, fill } = createSkillBar(skill, isGui);
+        appendAndScroll(body, wrapper);
         setTimeout(() => { fill.style.width = skill.pct + '%'; }, 100);
       }, i * 400);
     });
   }
 
   function showAssets() {
-    outputLine(assetsData.title, 'tag-asset');
+    outputLine(assetsData.title, assetsData.tag);
     outputDivider();
     for (const line of assetsData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
+    const body = getBody();
     setTimeout(() => {
-      const grid = document.createElement('div');
-      grid.className = 'asset-grid';
-      assetFiles.forEach((file) => {
-        const item = document.createElement('div');
-        item.className = 'asset-item';
-        item.innerHTML = '<span class="asset-icon">' + file.icon + '</span><span class="asset-name">' + file.name + '</span><span class="asset-size dim">' + file.size + '</span>';
-        grid.appendChild(item);
-      });
-      body.appendChild(grid);
-      body.scrollTop = body.scrollHeight;
-
+      appendAndScroll(body, createAssetGrid());
       setTimeout(() => {
-        const linkNote = document.createElement('div');
-        linkNote.className = 'line';
-        linkNote.innerHTML = '<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: <a href="https://github.com/LazenFajri" class="highlight">github.com/LazenFajri</a></span>';
-        body.appendChild(linkNote);
-        body.scrollTop = body.scrollHeight;
+        appendAndScroll(body, createNote('<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: <a href="https://github.com/LazenFajri" class="highlight">github.com/LazenFajri</a></span>'));
       }, 200);
     }, 100);
   }
 
   function showLinks() {
-    outputLine(linksData.title, 'tag-prof');
+    outputLine(linksData.title, linksData.tag);
     outputDivider();
     for (const line of linksData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
+    const body = getBody();
     setTimeout(() => {
-      const grid = document.createElement('div');
-      grid.className = 'link-grid';
-      linkItems.forEach((link) => {
-        const item = document.createElement('a');
-        item.className = 'link-item';
-        item.href = link.url;
-        item.target = '_blank';
-        item.rel = 'noopener noreferrer';
-        item.innerHTML = '<span class="link-icon">' + link.icon + '</span><span class="link-text">' + link.name + '</span><span class="link-url dim">' + new URL(link.url).hostname + '</span>';
-        grid.appendChild(item);
-      });
-      body.appendChild(grid);
-      body.scrollTop = body.scrollHeight;
-
+      appendAndScroll(body, createLinkGrid());
       setTimeout(() => {
-        const note = document.createElement('div');
-        note.className = 'line';
-        note.innerHTML = '<span class="dim">🔗 <span class="makan">Check out my YouTube @fajriaep580 for After Effects work!</span></span>';
-        body.appendChild(note);
-        body.scrollTop = body.scrollHeight;
+        appendAndScroll(body, createNote('<span class="dim">🔗 <span class="makan">Check out my YouTube @fajriaep580 for After Effects work!</span></span>'));
       }, 200);
     }, 100);
   }
@@ -1317,30 +1162,11 @@ import { Image } from 'astro:assets';
   function showProfile() {
     outputLine('<span class="highlight-purple">[04 // PROFILE]</span>', 'tag-prof');
     outputDivider();
-
-    const body = document.getElementById('terminal-body');
-    const grid = document.createElement('div');
-    grid.className = 'profile-grid';
-    grid.innerHTML =
-      '<img src="/assets/Muhammad Fajri Setyawan.png" alt="Muhammad Fajri Setyawan" class="profile-pic" width="120" height="120" loading="eager" decoding="async" />' +
-      '<div class="profile-details">' +
-        '<div><span class="label">Nama Lengkap</span><br/><span class="value highlight">Muhammad Fajri Setyawan</span></div>' +
-        '<div><span class="label">Username</span><br/><span class="value highlight-pink">LazenFajri</span> <span class="badge badge-coder">CODER</span></div>' +
-        '<div><span class="label">Status</span><br/><span class="value">Undergraduate Student (Mahasiswa)</span> <span class="badge badge-student">STUDENT</span></div>' +
-        '<div><span class="label">Institution</span><br/><span class="value">Universitas Dian Nuswarmantoro (UDINUS)</span></div>' +
-        '<div><span class="label">Major</span><br/><span class="value">Teknik Informatika (Informatics Engineering)</span></div>' +
-        '<div><span class="label">Prior Education</span><br/><span class="value">SMK Negeri 7 Semarang</span></div>' +
-        '<div><span class="label">Hobby</span><br/><span class="value makan">Food & Culinary Exploration ("Makan") 🍲</span></div>' +
-        '<div><span class="label">Agent</span><br/><span class="value dim">FAJRI-OS v2026.08 — AI Terminal Agent</span></div>' +
-      '</div>';
-    body.appendChild(grid);
-    body.scrollTop = body.scrollHeight;
+    appendAndScroll(getBody(), createProfileGrid());
   }
 
   function showMakan() {
-    const foods = ['🍜 Ramen', '🍕 Pizza', '🍔 Burger', '🍣 Sushi', '🌮 Tacos', '🍝 Pasta', '🍗 Fried Chicken', '🥘 Nasi Goreng', '🍩 Donuts', '🍰 Cake'];
-    const randomFood = foods[Math.floor(Math.random() * foods.length)];
-    outputLine('[MAKUAN AGENT] Fajri\'s current makan craving: <span class="makan">' + randomFood + '</span>', 'tag-warn');
+    outputLine('[MAKUAN AGENT] Fajri\'s current makan craving: <span class="makan">' + pickRandom(foods) + '</span>', 'tag-warn');
     outputLine('<span class="dim">Pro tip: Ask him about the best warung in <span class="highlight">Semarang</span> — he knows the spots.</span>', 'dim');
   }
 
@@ -1369,14 +1195,15 @@ import { Image } from 'astro:assets';
     const root = document.getElementById('fajri-terminal');
     
     function toggleMode() {
-      const isGui = root.dataset.mode === 'gui';
-      root.dataset.mode = isGui ? 'terminal' : 'gui';
+      const mode = nextMode(root.dataset.mode);
+      root.dataset.mode = mode;
       if (modeToggle) {
-        modeToggle.classList.toggle('active', !isGui);
+        modeToggle.classList.toggle('active', mode === 'gui');
+        const labels = modeToggleLabels(mode);
         const icon = modeToggle.querySelector('.mode-icon');
         const label = modeToggle.querySelector('.mode-label');
-        if (icon) icon.textContent = !isGui ? '▣' : '□';
-        if (label) label.textContent = !isGui ? 'TERM' : 'GUI';
+        if (icon) icon.textContent = labels.icon;
+        if (label) label.textContent = labels.label;
       }
     }
 
@@ -1394,8 +1221,8 @@ import { Image } from 'astro:assets';
         const mouseY = e.clientY - rect.top - rect.height / 2;
 
         document.querySelectorAll('.parallax-shape').forEach(shape => {
-          const speed = parseFloat(shape.getAttribute('data-speed')) || 0.1;
-          shape.style.transform = `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) rotate(${mouseX * 0.02}deg)`;
+          const speed = parseSpeed(shape.getAttribute('data-speed'), 0.1);
+          shape.style.transform = shapeTransform(mouseX, mouseY, speed);
         });
       });
 
@@ -1404,9 +1231,8 @@ import { Image } from 'astro:assets';
         if (root.dataset.mode !== 'gui') return;
         const scrolled = window.scrollY;
         document.querySelectorAll('#neubrutalism-gui [data-speed]').forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
-          const yPos = -(scrolled * speed);
-          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
+          const speed = parseSpeed(el.getAttribute('data-speed'), 0.05);
+          el.style.transform = scrollTransform(scrolled, speed);
         });
       });
     }
@@ -1455,17 +1281,13 @@ import { Image } from 'astro:assets';
             pt.y += pt.vy;
             pt.angle += pt.spin;
 
-            if (pt.x < 0 || pt.x > p.width) pt.vx *= -1;
-            if (pt.y < 0 || pt.y > p.height) pt.vy *= -1;
+            pt.vx = bounceVelocity(pt.x, pt.vx, p.width);
+            pt.vy = bounceVelocity(pt.y, pt.vy, p.height);
 
             // Interactive mouse repulsion
-            let dx = p.mouseX - pt.x;
-            let dy = p.mouseY - pt.y;
-            let dist = Math.sqrt(dx * dx + dy * dy);
-            if (dist < 130 && dist > 0) {
-              pt.x -= (dx / dist) * 2.5;
-              pt.y -= (dy / dist) * 2.5;
-            }
+            const repelled = repel(pt, p.mouseX, p.mouseY);
+            pt.x = repelled.x;
+            pt.y = repelled.y;
 
             p.push();
             p.translate(pt.x, pt.y);
