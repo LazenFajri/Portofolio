@@ -176,7 +176,7 @@ import { Image } from 'astro:assets';
           <span class="nb-card-tag">DOWNLOADS</span>
         </div>
         <div class="gui-asset-list">
-          <a href="/assets/CCNA License.pdf" target="_blank" class="gui-asset-link">
+          <a href="/assets/CCNA License.pdf" target="_blank" rel="noopener noreferrer" class="gui-asset-link">
             <span class="material-symbols-outlined asset-icon">history_edu</span>
             <div class="asset-details">
               <strong>CCNA License</strong>
@@ -184,7 +184,7 @@ import { Image } from 'astro:assets';
             </div>
             <span class="nb-mini-btn">UNDUH</span>
           </a>
-          <a href="/assets/Java Fundametals license.pdf" target="_blank" class="gui-asset-link">
+          <a href="/assets/Java Fundametals license.pdf" target="_blank" rel="noopener noreferrer" class="gui-asset-link">
             <span class="material-symbols-outlined asset-icon">terminal</span>
             <div class="asset-details">
               <strong>Java Fundamentals License</strong>
@@ -192,7 +192,7 @@ import { Image } from 'astro:assets';
             </div>
             <span class="nb-mini-btn">UNDUH</span>
           </a>
-          <a href="/assets/PC, Hardware, and Software License.pdf" target="_blank" class="gui-asset-link">
+          <a href="/assets/PC, Hardware, and Software License.pdf" target="_blank" rel="noopener noreferrer" class="gui-asset-link">
             <span class="material-symbols-outlined asset-icon">build_circle</span>
             <div class="asset-details">
               <strong>PC, Hardware, & Software License</strong>
@@ -237,7 +237,7 @@ import { Image } from 'astro:assets';
               alt="GitHub Contribution Snake Animation LazenFajri"
               class="gui-snake-img"
               loading="lazy"
-              onerror="this.closest('.gui-snake-wrap').innerHTML='<p class=\'snake-pending\'>🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.</p>'"
+              id="gui-snake-img"
             />
           </picture>
         </div>
@@ -1382,6 +1382,18 @@ import { Image } from 'astro:assets';
 
     if (modeToggle) modeToggle.addEventListener('click', toggleMode);
     if (guiModeToggle) guiModeToggle.addEventListener('click', toggleMode);
+
+    const snakeImg = document.getElementById('gui-snake-img');
+    if (snakeImg) {
+      snakeImg.addEventListener('error', function() {
+        const wrap = snakeImg.closest('.gui-snake-wrap');
+        if (!wrap) return;
+        const fallback = document.createElement('p');
+        fallback.className = 'snake-pending';
+        fallback.textContent = '🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.';
+        wrap.replaceChildren(fallback);
+      });
+    }
 
     // Parallax Scroll & Mousemove Effects for GUI Mode
     const guiContainer = document.getElementById('neubrutalism-gui');
