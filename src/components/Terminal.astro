@@ -237,7 +237,7 @@ import { Image } from 'astro:assets';
               alt="GitHub Contribution Snake Animation LazenFajri"
               class="gui-snake-img"
               loading="lazy"
-              onerror="this.closest('.gui-snake-wrap').innerHTML='<p class=\'snake-pending\'>🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.</p>'"
+              data-snake-img
             />
           </picture>
         </div>
@@ -1095,6 +1095,73 @@ import { Image } from 'astro:assets';
     { name: 'YouTube', url: 'https://youtube.com/@fajriaep580?si=5w38K4YjcdZ-uHCX', icon: '▶️' },
   ];
 
+  // --- Error plumbing -------------------------------------------------------
+  // Every failure must end up in the console AND, when possible, in the
+  // terminal itself. Nothing is allowed to fail silently.
+
+  class TerminalError extends Error {
+    constructor(message, options) {
+      super(message, options);
+      this.name = 'TerminalError';
+    }
+  }
+
+  let errorLineCount = 0;
+  const MAX_ERROR_LINES = 5;
+
+  function reportError(context, error) {
+    console.error('[FAJRI-OS] ' + context + ':', error);
+    if (errorLineCount >= MAX_ERROR_LINES) return;
+    errorLineCount++;
+    const body = document.getElementById('terminal-body');
+    if (!body) return;
+    const line = document.createElement('div');
+    line.className = 'line warn';
+    line.textContent = '[ERROR] ' + context + ' — ' + (error && error.message ? error.message : String(error));
+    body.appendChild(line);
+    body.scrollTop = body.scrollHeight;
+  }
+
+  // Runs fn, reporting (never swallowing) any failure. Returns whether fn ran
+  // to completion so callers can skip dependent work.
+  function guard(context, fn) {
+    try {
+      fn();
+      return true;
+    } catch (error) {
+      reportError(context, error);
+      return false;
+    }
+  }
+
+  // Same as guard(), but for callbacks handed to timers: an exception thrown
+  // inside setTimeout is otherwise invisible to the surrounding code.
+  function deferGuarded(context, fn, delay) {
+    return setTimeout(() => { guard(context, fn); }, delay);
+  }
+
+  function requireEl(id) {
+    const el = document.getElementById(id);
+    if (!el) throw new TerminalError('missing required element #' + id);
+    return el;
+  }
+
+  function onReady(fn) {
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', fn, { once: true });
+    } else {
+      fn();
+    }
+  }
+
+  window.addEventListener('error', (event) => {
+    reportError('uncaught error', event.error || new Error(event.message));
+  });
+
+  window.addEventListener('unhandledrejection', (event) => {
+    reportError('unhandled promise rejection', event.reason);
+  });
+
   function fmtTime() {
     const d = new Date();
     const pad = (n) => n.toString().padStart(2, '0');
@@ -1127,23 +1194,25 @@ import { Image } from 'astro:assets';
   }
 
   function runBootSequence() {
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     body.innerHTML = '';
     let idx = 0; let lineIndex = 0;
     function nextLine() {
-      if (idx >= bootSequence.length) { addPrompt(); return; }
+      if (idx >= bootSequence.length) { guard('prompt', addPrompt); return; }
       const entry = bootSequence[idx]; idx++;
       if (entry.skip) { setTimeout(nextLine, entry.delay || 100); return; }
-      const lineEl = createLine(entry.text, entry.cls, Math.min(lineIndex, 15));
-      body.appendChild(lineEl); lineIndex++;
-      body.scrollTop = body.scrollHeight;
+      guard('boot line ' + idx, () => {
+        const lineEl = createLine(entry.text, entry.cls, Math.min(lineIndex, 15));
+        body.appendChild(lineEl); lineIndex++;
+        body.scrollTop = body.scrollHeight;
+      });
       setTimeout(nextLine, entry.delay || 300);
     }
     nextLine();
   }
 
   function addPrompt() {
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     const prompt = document.createElement('div');
     prompt.className = 'line';
     prompt.innerHTML = '<span class="dim">[' + fmtTime() + ']</span> <span class="input-prompt">fajri$</span> <span class="dim">Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE</span>';
@@ -1152,8 +1221,7 @@ import { Image } from 'astro:assets';
   }
 
   function outputLine(text, cls) {
-    const body = document.getElementById('terminal-body');
-    const lineIndex = body.children.length;
+    const body = requireEl('terminal-body');
     const lineEl = createLine(text, cls, 0);
     lineEl.style.animationDelay = '0ms';
     body.appendChild(lineEl);
@@ -1161,7 +1229,7 @@ import { Image } from 'astro:assets';
   }
 
   function outputDivider() {
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     const div = document.createElement('div');
     div.className = 'divider';
     div.textContent = '----------------------------------------';
@@ -1170,13 +1238,13 @@ import { Image } from 'astro:assets';
   }
 
   function clearOutput() {
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     body.innerHTML = '';
     addPrompt();
   }
 
   function handleCommand(cmd) {
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     const echo = document.createElement('div');
     echo.className = 'line';
     echo.innerHTML = '<span class="highlight-pink">fajri$</span> ' + escapeHtml(cmd);
@@ -1185,14 +1253,14 @@ import { Image } from 'astro:assets';
 
     const c = cmd.trim().toLowerCase();
 
-    if (c === '' || c === 'help' || c === 'h' || c === '?') { showHelp(); }
-    else if (c === '1' || c === 'skills' || c === 'skill') { showSkills(); }
-    else if (c === '2' || c === 'assets' || c === 'license' || c === 'cert') { showAssets(); }
-    else if (c === '3' || c === 'links' || c === 'social' || c === 'connect') { showLinks(); }
-    else if (c === '4' || c === 'profile' || c === 'about' || c === 'whoami') { showProfile(); }
-    else if (c === 'makan' || c === 'hobby' || c === 'eat') { showMakan(); }
-    else if (c === '4321' || c === 'port') { showPortStatus(); }
-    else if (c === 'clear' || c === 'cls') { clearOutput(); return; }
+    if (c === '' || c === 'help' || c === 'h' || c === '?') { guard('help', showHelp); }
+    else if (c === '1' || c === 'skills' || c === 'skill') { guard('skills', showSkills); }
+    else if (c === '2' || c === 'assets' || c === 'license' || c === 'cert') { guard('assets', showAssets); }
+    else if (c === '3' || c === 'links' || c === 'social' || c === 'connect') { guard('links', showLinks); }
+    else if (c === '4' || c === 'profile' || c === 'about' || c === 'whoami') { guard('profile', showProfile); }
+    else if (c === 'makan' || c === 'hobby' || c === 'eat') { guard('makan', showMakan); }
+    else if (c === '4321' || c === 'port') { guard('port status', showPortStatus); }
+    else if (c === 'clear' || c === 'cls') { guard('clear', clearOutput); return; }
     else {
       outputLine('[ERROR] Unknown command: <span class="highlight-pink">' + escapeHtml(cmd) + '</span>', 'tag-warn');
       outputLine('<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>', 'dim');
@@ -1222,8 +1290,8 @@ import { Image } from 'astro:assets';
     outputDivider();
     for (const line of skillsData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
-    const isGui = document.getElementById('fajri-terminal').dataset.mode === 'gui';
+    const body = requireEl('terminal-body');
+    const isGui = requireEl('fajri-terminal').dataset.mode === 'gui';
 
     const skillDefs = [
       { name: 'After Effects', level: 'SEMI-PRO', pct: 80, className: isGui ? 'ae' : '', color: isGui ? 'var(--nb-coral)' : 'var(--accent-pink)' },
@@ -1232,7 +1300,7 @@ import { Image } from 'astro:assets';
     ];
 
     skillDefs.forEach((skill, i) => {
-      setTimeout(() => {
+      deferGuarded('skill bar "' + skill.name + '"', () => {
         const wrapper = document.createElement('div');
         wrapper.className = 'skill-bar';
         wrapper.innerHTML = '<div class="skill-name"><span>' + skill.name + '</span><span class="level-label">[' + skill.level + '] ' + skill.pct + '%</span></div>';
@@ -1250,7 +1318,9 @@ import { Image } from 'astro:assets';
         wrapper.appendChild(track);
         body.appendChild(wrapper);
         body.scrollTop = body.scrollHeight;
-        setTimeout(() => { fill.style.width = skill.pct + '%'; }, 100);
+        deferGuarded('skill bar animation "' + skill.name + '"', () => {
+          fill.style.width = skill.pct + '%';
+        }, 100);
       }, i * 400);
     });
   }
@@ -1260,8 +1330,8 @@ import { Image } from 'astro:assets';
     outputDivider();
     for (const line of assetsData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
-    setTimeout(() => {
+    const body = requireEl('terminal-body');
+    deferGuarded('asset grid', () => {
       const grid = document.createElement('div');
       grid.className = 'asset-grid';
       assetFiles.forEach((file) => {
@@ -1273,7 +1343,7 @@ import { Image } from 'astro:assets';
       body.appendChild(grid);
       body.scrollTop = body.scrollHeight;
 
-      setTimeout(() => {
+      deferGuarded('asset note', () => {
         const linkNote = document.createElement('div');
         linkNote.className = 'line';
         linkNote.innerHTML = '<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: <a href="https://github.com/LazenFajri" class="highlight">github.com/LazenFajri</a></span>';
@@ -1288,8 +1358,8 @@ import { Image } from 'astro:assets';
     outputDivider();
     for (const line of linksData.lines) { outputLine(line); }
 
-    const body = document.getElementById('terminal-body');
-    setTimeout(() => {
+    const body = requireEl('terminal-body');
+    deferGuarded('link grid', () => {
       const grid = document.createElement('div');
       grid.className = 'link-grid';
       linkItems.forEach((link) => {
@@ -1298,13 +1368,13 @@ import { Image } from 'astro:assets';
         item.href = link.url;
         item.target = '_blank';
         item.rel = 'noopener noreferrer';
-        item.innerHTML = '<span class="link-icon">' + link.icon + '</span><span class="link-text">' + link.name + '</span><span class="link-url dim">' + new URL(link.url).hostname + '</span>';
+        item.innerHTML = '<span class="link-icon">' + link.icon + '</span><span class="link-text">' + link.name + '</span><span class="link-url dim">' + hostnameOf(link) + '</span>';
         grid.appendChild(item);
       });
       body.appendChild(grid);
       body.scrollTop = body.scrollHeight;
 
-      setTimeout(() => {
+      deferGuarded('link note', () => {
         const note = document.createElement('div');
         note.className = 'line';
         note.innerHTML = '<span class="dim">🔗 <span class="makan">Check out my YouTube @fajriaep580 for After Effects work!</span></span>';
@@ -1314,11 +1384,22 @@ import { Image } from 'astro:assets';
     }, 100);
   }
 
+  // A malformed link degrades to the raw URL and is reported, instead of
+  // discarding the whole link grid.
+  function hostnameOf(link) {
+    try {
+      return new URL(link.url).hostname;
+    } catch (error) {
+      reportError('invalid URL for link "' + link.name + '"', error);
+      return escapeHtml(link.url);
+    }
+  }
+
   function showProfile() {
     outputLine('<span class="highlight-purple">[04 // PROFILE]</span>', 'tag-prof');
     outputDivider();
 
-    const body = document.getElementById('terminal-body');
+    const body = requireEl('terminal-body');
     const grid = document.createElement('div');
     grid.className = 'profile-grid';
     grid.innerHTML =
@@ -1350,24 +1431,24 @@ import { Image } from 'astro:assets';
     outputLine('<span class="dim">TLS: <span class="success">ENABLED</span> | Engine: <span class="highlight-cyan">ASTRO</span> | Mode: <span class="highlight-purple">SERVER</span></span>', 'dim');
   }
 
-  document.addEventListener('DOMContentLoaded', function() {
-    runBootSequence();
-
-    const input = document.getElementById('terminal-input');
+  function initTerminalInput() {
+    const input = requireEl('terminal-input');
     input.addEventListener('keydown', function(e) {
       if (e.key === 'Enter') {
         const cmd = input.value;
         input.value = '';
-        if (cmd.trim()) { handleCommand(cmd); }
+        if (cmd.trim()) { guard('command "' + cmd.trim() + '"', () => handleCommand(cmd)); }
       }
       if (e.key === 'Tab') { e.preventDefault(); input.value = 'help'; }
     });
+    input.focus();
+  }
 
-    // Mode toggle (Terminal <-> Neubrutalist GUI)
+  function initModeToggle() {
     const modeToggle = document.getElementById('mode-toggle');
     const guiModeToggle = document.getElementById('gui-mode-toggle');
-    const root = document.getElementById('fajri-terminal');
-    
+    const root = requireEl('fajri-terminal');
+
     function toggleMode() {
       const isGui = root.dataset.mode === 'gui';
       root.dataset.mode = isGui ? 'terminal' : 'gui';
@@ -1380,44 +1461,114 @@ import { Image } from 'astro:assets';
       }
     }
 
-    if (modeToggle) modeToggle.addEventListener('click', toggleMode);
-    if (guiModeToggle) guiModeToggle.addEventListener('click', toggleMode);
+    if (!modeToggle && !guiModeToggle) {
+      throw new TerminalError('no mode toggle button found (#mode-toggle / #gui-mode-toggle)');
+    }
+    if (modeToggle) modeToggle.addEventListener('click', () => guard('mode toggle', toggleMode));
+    if (guiModeToggle) guiModeToggle.addEventListener('click', () => guard('mode toggle', toggleMode));
+  }
 
-    // Parallax Scroll & Mousemove Effects for GUI Mode
-    const guiContainer = document.getElementById('neubrutalism-gui');
-    if (guiContainer) {
-      // 1. Mouse move 3D tilt effect on GUI Hero and Cards
-      guiContainer.addEventListener('mousemove', function(e) {
-        if (root.dataset.mode !== 'gui') return;
-        const rect = guiContainer.getBoundingClientRect();
-        const mouseX = e.clientX - rect.left - rect.width / 2;
-        const mouseY = e.clientY - rect.top - rect.height / 2;
+  // Parallax Scroll & Mousemove Effects for GUI Mode
+  function initParallax() {
+    const guiContainer = requireEl('neubrutalism-gui');
+    const root = requireEl('fajri-terminal');
 
-        document.querySelectorAll('.parallax-shape').forEach(shape => {
-          const speed = parseFloat(shape.getAttribute('data-speed')) || 0.1;
-          shape.style.transform = `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) rotate(${mouseX * 0.02}deg)`;
-        });
+    // 1. Mouse move 3D tilt effect on GUI Hero and Cards
+    guiContainer.addEventListener('mousemove', function(e) {
+      if (root.dataset.mode !== 'gui') return;
+      const rect = guiContainer.getBoundingClientRect();
+      const mouseX = e.clientX - rect.left - rect.width / 2;
+      const mouseY = e.clientY - rect.top - rect.height / 2;
+
+      document.querySelectorAll('.parallax-shape').forEach(shape => {
+        const speed = readSpeed(shape, 0.1);
+        shape.style.transform = `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) rotate(${mouseX * 0.02}deg)`;
       });
+    });
 
-      // 2. Scroll Parallax
-      window.addEventListener('scroll', function() {
-        if (root.dataset.mode !== 'gui') return;
-        const scrolled = window.scrollY;
-        document.querySelectorAll('#neubrutalism-gui [data-speed]').forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
-          const yPos = -(scrolled * speed);
-          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
-        });
+    // 2. Scroll Parallax
+    window.addEventListener('scroll', function() {
+      if (root.dataset.mode !== 'gui') return;
+      const scrolled = window.scrollY;
+      document.querySelectorAll('#neubrutalism-gui [data-speed]').forEach(el => {
+        const speed = readSpeed(el, 0.05);
+        const yPos = -(scrolled * speed);
+        el.style.transform = `translate3d(0, ${yPos}px, 0)`;
       });
+    });
+  }
+
+  // An unparsable data-speed falls back to the default, but is logged instead
+  // of being hidden behind `|| default`.
+  function readSpeed(el, fallback) {
+    const raw = el.getAttribute('data-speed');
+    const speed = parseFloat(raw);
+    if (!Number.isFinite(speed)) {
+      console.warn('[FAJRI-OS] invalid data-speed "' + raw + '", using ' + fallback, el);
+      return fallback;
+    }
+    return speed;
+  }
+
+  // The contribution snake is generated by a scheduled workflow, so a missing
+  // SVG is expected — but it is logged and shown, not hidden.
+  function initSnakeFallback() {
+    const img = document.querySelector('[data-snake-img]');
+    if (!img) throw new TerminalError('missing contribution snake image');
+
+    function showSnakeFallback() {
+      console.warn('[FAJRI-OS] contribution snake SVG unavailable:', img.currentSrc || img.src);
+      const wrap = img.closest('.gui-snake-wrap');
+      if (!wrap) {
+        reportError('snake fallback', new TerminalError('missing .gui-snake-wrap container'));
+        return;
+      }
+      const note = document.createElement('p');
+      note.className = 'snake-pending';
+      note.textContent = '🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.';
+      wrap.replaceChildren(note);
     }
 
-    input.focus();
+    img.addEventListener('error', () => guard('snake fallback', showSnakeFallback), { once: true });
+    // The image may already have failed before this handler was attached.
+    if (img.complete && img.naturalWidth === 0) showSnakeFallback();
+  }
+
+  // Each feature is initialised independently: a failure in one no longer
+  // aborts the rest of startup (and is always reported).
+  onReady(function() {
+    guard('boot sequence', runBootSequence);
+    guard('terminal input', initTerminalInput);
+    guard('mode toggle setup', initModeToggle);
+    guard('parallax setup', initParallax);
+    guard('snake fallback setup', initSnakeFallback);
   });
 
   // --- p5.js Interactive Dual-Mode Canvas (Cyberpunk CLI & Neubrutalism GUI) ---
   if (typeof window !== 'undefined') {
-    const initP5 = () => {
-      if (!window.p5) return;
+    const P5_MAX_ATTEMPTS = 10;
+    const P5_RETRY_DELAY = 300;
+
+    // p5 comes from a CDN, so it can legitimately be late or absent. Wait for
+    // it, then say so explicitly instead of returning silently.
+    const initP5 = (attempt = 1) => {
+      if (!window.p5) {
+        if (window.__p5LoadFailed) {
+          reportError('background canvas', new Error('p5.js failed to load from CDN — decorative background disabled'));
+          return;
+        }
+        if (attempt >= P5_MAX_ATTEMPTS) {
+          reportError('background canvas', new Error('p5.js unavailable after ' + attempt + ' attempts — decorative background disabled'));
+          return;
+        }
+        setTimeout(() => initP5(attempt + 1), P5_RETRY_DELAY);
+        return;
+      }
+      guard('background canvas', () => createP5Sketch());
+    };
+
+    const createP5Sketch = () => {
+      requireEl('p5-bg-canvas');
       new window.p5(p => {
         let particles = [];
         const particleCount = 40;
@@ -1442,7 +1593,18 @@ import { Image } from 'astro:assets';
           }
         };
 
+        // A throwing draw() would otherwise fail on every frame; report once
+        // and stop the loop instead of flooding.
         p.draw = () => {
+          try {
+            drawFrame();
+          } catch (error) {
+            reportError('background canvas frame', error);
+            p.noLoop();
+          }
+        };
+
+        const drawFrame = () => {
           p.clear();
           const root = document.getElementById('fajri-terminal');
           const isGui = root && root.dataset.mode === 'gui';
@@ -1506,14 +1668,12 @@ import { Image } from 'astro:assets';
           });
         };
 
-        p.windowResized = () => p.resizeCanvas(window.innerWidth, window.innerHeight);
+        p.windowResized = () => guard('background canvas resize', () => {
+          p.resizeCanvas(window.innerWidth, window.innerHeight);
+        });
       });
     };
 
-    if (document.readyState === 'complete' || document.readyState === 'interactive') {
-      setTimeout(initP5, 200);
-    } else {
-      window.addEventListener('DOMContentLoaded', () => setTimeout(initP5, 200));
-    }
+    onReady(() => deferGuarded('background canvas init', () => initP5(), 200));
   }
 </script>
