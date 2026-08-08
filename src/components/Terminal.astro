@@ -1,6 +1,31 @@
 ---
-import { Code } from 'astro/components';
-import { Image } from 'astro:assets';
+import {
+  CERTIFICATES,
+  GUI_INFO_ROWS,
+  LINKS_BY_NAME,
+  PROFILE,
+  SKILLS,
+  SOCIAL_LINKS,
+} from '../data/portfolio';
+
+const heroBadges = [
+  { color: 'yellow', icon: 'school', text: `${PROFILE.institutionShort} 2026` },
+  { color: 'coral', icon: 'movie', text: 'AFTER EFFECTS' },
+  { color: 'sky', icon: 'smart_toy', text: 'HERMES AGENT' },
+];
+
+const heroActions = [
+  { color: 'coral', icon: 'person', label: 'Profil', href: '#gui-profile' },
+  { color: 'yellow', icon: 'electric_bolt', label: 'Skill', href: '#gui-skills' },
+  { color: 'sky', icon: 'verified', label: 'Lisensi', href: '#gui-assets' },
+  {
+    color: 'lavender',
+    icon: 'play_circle',
+    label: 'YouTube',
+    href: LINKS_BY_NAME.YouTube.url,
+    external: true,
+  },
+];
 ---
 
 <div id="p5-bg-canvas"></div>
@@ -10,7 +35,7 @@ import { Image } from 'astro:assets';
 
   <div class="terminal-header">
     <span class="terminal-title">
-      <span class="pulse-dot"></span> FAJRI-OS // v2026.08 <span class="dim">ASTRO-HERMES TERMINAL</span>
+      <span class="pulse-dot"></span> {PROFILE.agent} // {PROFILE.agentVersion} <span class="dim">ASTRO-HERMES TERMINAL</span>
     </span>
     <div class="terminal-window-controls">
       <span class="control-btn" data-color="#ff5f56"></span>
@@ -34,24 +59,24 @@ import { Image } from 'astro:assets';
   </div>
 
   <div class="terminal-status">
-    <span class="status-item">PORT: <span class="highlight">4321</span></span>
+    <span class="status-item">PORT: <span class="highlight">{PROFILE.port}</span></span>
     <span class="status-item">STATUS: <span class="highlight success">200 OK</span></span>
     <span class="status-item">CONN: <span class="highlight">SECURE</span></span>
-    <span class="status-item">AGENT: <span class="highlight warn">FAJRI-OS ACTIVE</span></span>
+    <span class="status-item">AGENT: <span class="highlight warn">{PROFILE.agent} ACTIVE</span></span>
   </div>
 
   <!-- GUI Mode Content (Modern Neubrutalism Portfolio Website) -->
   <div id="neubrutalism-gui" class="gui-container">
     <header class="gui-header">
       <div class="gui-brand">
-        <img src="/assets/MyLogo.png" alt="UDINUS Logo" class="gui-brand-logo" width="36" height="36" />
+        <img src={PROFILE.logo} alt={`${PROFILE.institutionShort} Logo`} class="gui-brand-logo" width="36" height="36" />
         <div class="gui-brand-text">
-          <span class="gui-brand-title">MUHAMMAD FAJRI SETYAWAN</span>
-          <span class="gui-brand-sub">UDINUS • TEKNIK INFORMATIKA 2026</span>
+          <span class="gui-brand-title">{PROFILE.fullName.toUpperCase()}</span>
+          <span class="gui-brand-sub">{PROFILE.institutionShort} • {PROFILE.major.toUpperCase()} 2026</span>
         </div>
       </div>
       <div class="gui-nav-actions">
-        <span class="gui-status-pill"><span class="material-symbols-outlined nav-icon">bolt</span> FAJRI-OS ONLINE</span>
+        <span class="gui-status-pill"><span class="material-symbols-outlined nav-icon">bolt</span> {PROFILE.agent} ONLINE</span>
         <button id="gui-mode-toggle" class="gui-toggle-btn">
           <span class="material-symbols-outlined gui-btn-icon">terminal</span> SWITCH TO TERMINAL
         </button>
@@ -68,163 +93,117 @@ import { Image } from 'astro:assets';
     <section class="gui-hero">
       <div class="gui-hero-text">
         <div class="gui-badge-row">
-          <span class="nb-badge nb-badge-yellow"><span class="material-symbols-outlined badge-icon">school</span> UDINUS 2026</span>
-          <span class="nb-badge nb-badge-coral"><span class="material-symbols-outlined badge-icon">movie</span> AFTER EFFECTS</span>
-          <span class="nb-badge nb-badge-sky"><span class="material-symbols-outlined badge-icon">smart_toy</span> HERMES AGENT</span>
+          {heroBadges.map((badge, i) => (
+            <span class={`nb-badge nb-badge-${badge.color}`} style={`--i: ${i}`}>
+              <span class="material-symbols-outlined badge-icon">{badge.icon}</span> {badge.text}
+            </span>
+          ))}
         </div>
         <h1 class="gui-hero-title">CREATIVE CODER & MOTION DESIGNER</h1>
         <p class="gui-hero-desc">
-          Halo! Saya <strong>Muhammad Fajri Setyawan</strong> (@LazenFajri), mahasiswa Teknik Informatika 
-          <strong>Universitas Dian Nuswantoro (UDINUS)</strong> Semarang & alumni SMK Negeri 7 Semarang. 
+          Halo! Saya <strong>{PROFILE.fullName}</strong> (@{PROFILE.username}), mahasiswa {PROFILE.major}{' '}
+          <strong>{PROFILE.institution} ({PROFILE.institutionShort})</strong> Semarang & alumni {PROFILE.priorEducation}.
           Spesialisasi di bidang video editing After Effects, prompt engineering AI agent, dan web development.
         </p>
         <div class="gui-hero-actions">
-          <a href="#gui-profile" class="nb-btn nb-btn-coral"><span class="material-symbols-outlined btn-icon">person</span> Profil</a>
-          <a href="#gui-skills" class="nb-btn nb-btn-yellow"><span class="material-symbols-outlined btn-icon">electric_bolt</span> Skill</a>
-          <a href="#gui-assets" class="nb-btn nb-btn-sky"><span class="material-symbols-outlined btn-icon">verified</span> Lisensi</a>
-          <a href="https://youtube.com/@fajriaep580" target="_blank" rel="noopener" class="nb-btn nb-btn-lavender"><span class="material-symbols-outlined btn-icon">play_circle</span> YouTube</a>
+          {heroActions.map((action, i) => (
+            <a
+              href={action.href}
+              class={`nb-btn nb-btn-${action.color}`}
+              style={`--i: ${i}`}
+              target={action.external ? '_blank' : undefined}
+              rel={action.external ? 'noopener' : undefined}
+            >
+              <span class="material-symbols-outlined btn-icon">{action.icon}</span> {action.label}
+            </a>
+          ))}
         </div>
       </div>
       <div class="gui-hero-avatar-box" data-speed="0.08">
         <div class="gui-avatar-card">
-          <img src="/assets/Muhammad Fajri Setyawan.png" alt="Muhammad Fajri Setyawan" class="gui-avatar-img" width="260" height="260" loading="eager" decoding="async" />
+          <img src={PROFILE.avatar} alt={PROFILE.fullName} class="gui-avatar-img" width="260" height="260" loading="eager" decoding="async" />
           <div class="gui-avatar-caption">
-            <strong>Muhammad Fajri Setyawan</strong>
-            <span>@LazenFajri • Semarang, ID</span>
+            <strong>{PROFILE.fullName}</strong>
+            <span>@{PROFILE.username} • {PROFILE.location}</span>
           </div>
         </div>
       </div>
     </section>
 
     <div class="gui-grid">
-      <section id="gui-profile" class="nb-card nb-card-yellow" data-speed="0.05">
+      <section id="gui-profile" class="nb-card nb-card-yellow" data-speed="0.05" style="--i: 0">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">badge</span> INFORMASI DIRI</h2>
           <span class="nb-card-tag">PROFILE</span>
         </div>
         <div class="gui-info-list">
-          <div class="gui-info-item">
-            <span class="info-label">NAMA LENGKAP</span>
-            <span class="info-val">Muhammad Fajri Setyawan</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">USERNAME</span>
-            <span class="info-val">LazenFajri</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">STATUS</span>
-            <span class="info-val">Mahasiswa Baru FIK (UDINUS)</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">INSTITUSI</span>
-            <span class="info-val">Universitas Dian Nuswantoro</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">PRODI</span>
-            <span class="info-val">Teknik Informatika (S1)</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">PENDIDIKAN DAHULU</span>
-            <span class="info-val">SMK Negeri 7 Semarang</span>
-          </div>
-          <div class="gui-info-item">
-            <span class="info-label">HOBI & FAVORIT</span>
-            <span class="info-val"><span class="material-symbols-outlined inline-icon">restaurant</span> Kulineran & Makan</span>
-          </div>
+          {GUI_INFO_ROWS.map((row) => (
+            <div class="gui-info-item">
+              <span class="info-label">{row.label}</span>
+              <span class="info-val">
+                {row.icon && <span class="material-symbols-outlined inline-icon">{row.icon}</span>}{' '}
+                {row.value}
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
-      <section id="gui-skills" class="nb-card nb-card-lavender" data-speed="-0.05">
+      <section id="gui-skills" class="nb-card nb-card-lavender" data-speed="-0.05" style="--i: 1">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">psychology</span> SKILLS & EXPERTISE</h2>
           <span class="nb-card-tag">SKILLS</span>
         </div>
         <div class="gui-skills-container">
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">movie</span> After Effects Video Editing</span>
-              <strong>[SEMI-PRO] 80%</strong>
+          {SKILLS.map((skill) => (
+            <div class="gui-skill-item">
+              <div class="gui-skill-meta">
+                <span><span class="material-symbols-outlined skill-icon">{skill.icon}</span> {skill.name}</span>
+                <strong>[{skill.level}] {skill.pct}%</strong>
+              </div>
+              <div class="gui-progress-bar">
+                <div class={`gui-progress-fill ${skill.guiFill}`} style={`width: ${skill.pct}%;`}></div>
+              </div>
             </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill coral" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">smart_toy</span> Agent Prompting</span>
-              <strong>[SEMI-PRO] 80%</strong>
-            </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill sky" style="width: 80%;"></div>
-            </div>
-          </div>
-          <div class="gui-skill-item">
-            <div class="gui-skill-meta">
-              <span><span class="material-symbols-outlined skill-icon">code</span> Coding Fundamentals</span>
-              <strong>[BASIC] 40%</strong>
-            </div>
-            <div class="gui-progress-bar">
-              <div class="gui-progress-fill yellow" style="width: 40%;"></div>
-            </div>
-          </div>      
+          ))}
         </div>
       </section>
 
-      <section id="gui-assets" class="nb-card nb-card-sky" data-speed="0.08">
+      <section id="gui-assets" class="nb-card nb-card-sky" data-speed="0.08" style="--i: 2">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">workspace_premium</span> SERTIFIKAT & LISENSI</h2>
           <span class="nb-card-tag">DOWNLOADS</span>
         </div>
         <div class="gui-asset-list">
-          <a href="/assets/CCNA License.pdf" target="_blank" class="gui-asset-link">
-            <span class="material-symbols-outlined asset-icon">history_edu</span>
-            <div class="asset-details">
-              <strong>CCNA License</strong>
-              <small>Cisco Certified Network Associate (PDF)</small>
-            </div>
-            <span class="nb-mini-btn">UNDUH</span>
-          </a>
-          <a href="/assets/Java Fundametals license.pdf" target="_blank" class="gui-asset-link">
-            <span class="material-symbols-outlined asset-icon">terminal</span>
-            <div class="asset-details">
-              <strong>Java Fundamentals License</strong>
-              <small>Oracle / Java Certification (PDF)</small>
-            </div>
-            <span class="nb-mini-btn">UNDUH</span>
-          </a>
-          <a href="/assets/PC, Hardware, and Software License.pdf" target="_blank" class="gui-asset-link">
-            <span class="material-symbols-outlined asset-icon">build_circle</span>
-            <div class="asset-details">
-              <strong>PC, Hardware, & Software License</strong>
-              <small>IT Infrastructure & Hardware (PDF)</small>
-            </div>
-            <span class="nb-mini-btn">UNDUH</span>
-          </a>
+          {CERTIFICATES.map(({ file, certificate }) => (
+            <a href={`/assets/${file}`} target="_blank" class="gui-asset-link">
+              <span class="material-symbols-outlined asset-icon">{certificate!.icon}</span>
+              <div class="asset-details">
+                <strong>{certificate!.title}</strong>
+                <small>{certificate!.description}</small>
+              </div>
+              <span class="nb-mini-btn">UNDUH</span>
+            </a>
+          ))}
         </div>
       </section>
 
-      <section id="gui-links" class="nb-card nb-card-coral" data-speed="-0.08">
+      <section id="gui-links" class="nb-card nb-card-coral" data-speed="-0.08" style="--i: 3">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">share</span> MEDIA SOSIAL & PORTAL</h2>
           <span class="nb-card-tag">CONNECT</span>
         </div>
         <div class="gui-link-grid">
-          <a href="https://youtube.com/@fajriaep580" target="_blank" rel="noopener" class="gui-social-btn">
-            <img src="/assets/Youtube_logo.png" alt="YouTube" width="22" height="22" />
-            <span>YouTube (@fajriaep580)</span>
-          </a>
-          <a href="https://github.com/LazenFajri" target="_blank" rel="noopener" class="gui-social-btn">
-            <img src="/assets/Octicons-mark-github.svg" alt="GitHub" width="22" height="22" />
-            <span>GitHub (LazenFajri)</span>
-          </a>
-          <a href="https://www.linkedin.com/in/muhammad-fajri-setyawan" target="_blank" rel="noopener" class="gui-social-btn">
-            <img src="/assets/LinkedIn_icon.svg" alt="LinkedIn" width="22" height="22" />
-            <span>LinkedIn (Fajri Setyawan)</span>
-          </a>
+          {SOCIAL_LINKS.map((link) => (
+            <a href={link.url} target="_blank" rel="noopener" class="gui-social-btn">
+              <img src={link.logo} alt={link.name} width="22" height="22" />
+              <span>{link.label}</span>
+            </a>
+          ))}
         </div>
       </section>
 
-      <section id="gui-snake" class="nb-card nb-card-snake" data-speed="0.04">
+      <section id="gui-snake" class="nb-card nb-card-snake" data-speed="0.04" style="--i: 4">
         <div class="nb-card-header">
           <h2><span class="material-symbols-outlined section-icon">conversion_path</span> GITHUB CONTRIBUTIONS</h2>
           <span class="nb-card-tag">ACTIVITY</span>
@@ -234,7 +213,7 @@ import { Image } from 'astro:assets';
             <source media="(prefers-color-scheme: dark)" srcset="https://raw.githubusercontent.com/LazenFajri/Portofolio/output/github-contribution-grid-snake-dark.svg" />
             <img
               src="https://raw.githubusercontent.com/LazenFajri/Portofolio/output/github-contribution-grid-snake.svg"
-              alt="GitHub Contribution Snake Animation LazenFajri"
+              alt={`GitHub Contribution Snake Animation ${PROFILE.username}`}
               class="gui-snake-img"
               loading="lazy"
               onerror="this.closest('.gui-snake-wrap').innerHTML='<p class=\'snake-pending\'>🐍 Snake animation akan muncul setelah GitHub Actions pertama kali berjalan.</p>'"
@@ -275,6 +254,10 @@ import { Image } from 'astro:assets';
     --nb-green: #88D498;
     --nb-orange: #FFA552;
     --nb-lavender: #B8A9FA;
+
+    /* Shared easings; `--i` on an element sets its index in a staggered sequence. */
+    --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+    --ease-back: cubic-bezier(0.34, 1.56, 0.64, 1);
 
     --nb-stroke: 3px;
     --nb-radius: 0;
@@ -383,7 +366,8 @@ import { Image } from 'astro:assets';
     50% { opacity: 1; box-shadow: 0 0 6px var(--accent-cyan), 0 0 12px var(--accent-cyan), 0 0 20px var(--accent-cyan); }
   }
 
-  .dim { color: var(--text-dim); font-weight: 400; }
+  .dim { color: var(--text-dim); }
+  .terminal-title .dim { font-weight: 400; }
 
   .terminal-window-controls {
     display: flex;
@@ -419,54 +403,44 @@ import { Image } from 'astro:assets';
   .line {
     margin-bottom: 0.2rem;
     opacity: 0;
-    transform: translateY(8px);
-    animation: fadeInUp 0.3s forwards;
+    animation: fadeSlide 0.3s forwards;
+    animation-delay: calc(var(--line-delay-index, 0) * 80ms);
   }
 
-  @keyframes fadeInUp { to { opacity: 1; transform: translateY(0); } }
+  /* Shared fade + slide entrance; `--slide-from` sets the travel distance. */
+  @keyframes fadeSlide {
+    from { opacity: 0; transform: translateY(var(--slide-from, 8px)); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  .line-delay-0 { animation-delay: 0ms; }
-  .line-delay-1 { animation-delay: 80ms; }
-  .line-delay-2 { animation-delay: 160ms; }
-  .line-delay-3 { animation-delay: 240ms; }
-  .line-delay-4 { animation-delay: 320ms; }
-  .line-delay-5 { animation-delay: 400ms; }
-  .line-delay-6 { animation-delay: 480ms; }
-  .line-delay-7 { animation-delay: 560ms; }
-  .line-delay-8 { animation-delay: 640ms; }
-  .line-delay-9 { animation-delay: 720ms; }
-  .line-delay-10 { animation-delay: 800ms; }
-  .line-delay-11 { animation-delay: 880ms; }
-  .line-delay-12 { animation-delay: 960ms; }
-  .line-delay-13 { animation-delay: 1040ms; }
-  .line-delay-14 { animation-delay: 1120ms; }
-  .line-delay-15 { animation-delay: 1200ms; }
-
-  .tag {
+  /* Chip-like labels (terminal tags, profile badges): one shape, one accent var. */
+  .tag, .badge {
     display: inline-block;
-    padding: 0.1rem 0.45rem;
-    border-radius: 3px;
-    font-size: 0.75rem;
     font-weight: 700;
     letter-spacing: 1px;
     text-transform: uppercase;
+    border-radius: 3px;
+    background: rgba(var(--chip-rgb), 0.15);
+    color: rgb(var(--chip-rgb));
+    border: 1px solid rgba(var(--chip-rgb), 0.3);
+  }
+  .tag {
+    padding: 0.1rem 0.45rem;
+    font-size: 0.75rem;
     margin-right: 0.4rem;
   }
-  .tag-sys { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
-  .tag-prof { background: rgba(255, 46, 149, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 46, 149, 0.3); }
-  .tag-asset { background: rgba(138, 43, 226, 0.15); color: var(--accent-purple); border: 1px solid rgba(138, 43, 226, 0.3); }
-  .tag-ok { background: rgba(39, 201, 63, 0.15); color: #27c93f; border: 1px solid rgba(39, 201, 63, 0.3); }
-  .tag-warn { background: rgba(255, 189, 46, 0.15); color: #ffbd2e; border: 1px solid rgba(255, 189, 46, 0.3); }
+  .tag-sys { --chip-rgb: 0, 240, 255; }
+  .tag-prof { --chip-rgb: 255, 46, 149; }
+  .tag-asset { --chip-rgb: 138, 43, 226; }
+  .tag-ok { --chip-rgb: 39, 201, 63; }
+  .tag-warn { --chip-rgb: 255, 189, 46; }
 
-  .highlight { color: var(--accent-cyan); }
-  .highlight-cyan { color: var(--accent-cyan); }
-  .highlight-pink { color: var(--accent-pink); }
+  .highlight, .highlight-cyan { color: var(--accent-cyan); }
+  .highlight-pink, .makan { color: var(--accent-pink); }
   .highlight-purple { color: var(--accent-purple); }
   .highlight-gold { color: var(--accent-gold); }
   .success { color: #27c93f; }
   .warn { color: #ffbd2e; }
-  .dim { color: var(--text-dim); }
-  .makan { color: var(--accent-pink); }
 
   .divider {
     color: var(--border-bright);
@@ -600,13 +574,12 @@ import { Image } from 'astro:assets';
   .profile-details .label { color: var(--text-dim); }
   .profile-details .value { color: var(--text-primary); }
   .badge {
-    display: inline-block; padding: 0.1rem 0.3rem; border-radius: 3px;
-    font-size: 0.62rem; font-weight: 700; letter-spacing: 1px;
+    padding: 0.1rem 0.3rem;
+    font-size: 0.62rem;
     margin-top: 0.2rem; align-self: flex-start;
   }
-  .badge-student { background: rgba(0, 240, 255, 0.15); color: var(--accent-cyan); border: 1px solid rgba(0, 240, 255, 0.3); }
-  .badge-coder { background: rgba(255, 46, 149, 0.15); color: var(--accent-pink); border: 1px solid rgba(255, 46, 149, 0.3); }
-  .makan { color: var(--accent-pink); }
+  .badge-student { --chip-rgb: 0, 240, 255; }
+  .badge-coder { --chip-rgb: 255, 46, 149; }
 
   /* Mode Toggle Button */
   .mode-toggle {
@@ -722,7 +695,7 @@ import { Image } from 'astro:assets';
      ============================================================ */
 
   .terminal-root {
-    animation: terminalPop 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    animation: terminalPop 0.6s var(--ease-out) forwards;
   }
 
   @keyframes terminalPop {
@@ -731,90 +704,56 @@ import { Image } from 'astro:assets';
   }
 
   .terminal-root .terminal-header {
-    animation: cliHeaderSlide 0.5s 0.1s cubic-bezier(0.16, 1, 0.3, 1) both;
+    --slide-from: -15px;
+    animation: fadeSlide 0.5s 0.1s var(--ease-out) both;
   }
   .terminal-root .terminal-status {
-    animation: cliStatusSlide 0.5s 0.3s cubic-bezier(0.16, 1, 0.3, 1) both;
+    --slide-from: 15px;
+    animation: fadeSlide 0.5s 0.3s var(--ease-out) both;
   }
   .terminal-root .terminal-input-zone {
-    animation: cliInputSlide 0.5s 0.2s cubic-bezier(0.16, 1, 0.3, 1) both;
+    animation: cliInputSlide 0.5s 0.2s var(--ease-out) both;
   }
 
-  @keyframes cliHeaderSlide {
-    0% { opacity: 0; transform: translateY(-15px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
-  @keyframes cliStatusSlide {
-    0% { opacity: 0; transform: translateY(15px); }
-    100% { opacity: 1; transform: translateY(0); }
-  }
   @keyframes cliInputSlide {
     0% { opacity: 0; transform: scaleX(0.95); }
     100% { opacity: 1; transform: scaleX(1); }
   }
 
-  /* Neubrutalism GUI Staggered Reload Animations */
+  /* Neubrutalism GUI Staggered Reload Animations (stagger driven by `--i`) */
   .terminal-root[data-mode="gui"] .gui-header {
-    animation: nbSlideDown 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+    --slide-from: -25px;
+    animation: fadeSlide 0.5s var(--ease-out) both;
   }
 
   .terminal-root[data-mode="gui"] .gui-hero {
-    animation: nbHeroPop 0.6s 0.15s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation: nbHeroPop 0.6s 0.15s var(--ease-back) both;
   }
 
-  .terminal-root[data-mode="gui"] .nb-badge:nth-child(1) {
-    animation: nbBadgeScale 0.4s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .terminal-root[data-mode="gui"] .nb-badge:nth-child(2) {
-    animation: nbBadgeScale 0.4s 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .terminal-root[data-mode="gui"] .nb-badge:nth-child(3) {
-    animation: nbBadgeScale 0.4s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  .terminal-root[data-mode="gui"] .nb-badge {
+    animation: nbBadgeScale 0.4s var(--ease-back) both;
+    animation-delay: calc(0.3s + var(--i, 0) * 0.1s);
   }
 
-  .terminal-root[data-mode="gui"] .gui-hero-title {
-    animation: nbTextFade 0.5s 0.35s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
+  .terminal-root[data-mode="gui"] .gui-hero-title,
   .terminal-root[data-mode="gui"] .gui-hero-desc {
-    animation: nbTextFade 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
+    --slide-from: 12px;
+    animation: fadeSlide 0.5s 0.35s var(--ease-out) both;
   }
+  .terminal-root[data-mode="gui"] .gui-hero-desc { animation-delay: 0.45s; }
 
-  .terminal-root[data-mode="gui"] .nb-btn:nth-child(1) {
-    animation: nbBtnBounce 0.4s 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .terminal-root[data-mode="gui"] .nb-btn:nth-child(2) {
-    animation: nbBtnBounce 0.4s 0.58s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .terminal-root[data-mode="gui"] .nb-btn:nth-child(3) {
-    animation: nbBtnBounce 0.4s 0.66s cubic-bezier(0.34, 1.56, 0.64, 1) both;
-  }
-  .terminal-root[data-mode="gui"] .nb-btn:nth-child(4) {
-    animation: nbBtnBounce 0.4s 0.74s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+  .terminal-root[data-mode="gui"] .nb-btn {
+    animation: nbBtnBounce 0.4s var(--ease-back) both;
+    animation-delay: calc(0.5s + var(--i, 0) * 0.08s);
   }
 
   .terminal-root[data-mode="gui"] .gui-avatar-card {
-    animation: nbAvatarTilt 0.65s 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+    animation: nbAvatarTilt 0.65s 0.3s var(--ease-back) both;
   }
 
-  .terminal-root[data-mode="gui"] #gui-profile {
-    animation: nbCardEntry 0.5s 0.45s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .terminal-root[data-mode="gui"] #gui-skills {
-    animation: nbCardEntry 0.5s 0.55s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .terminal-root[data-mode="gui"] #gui-assets {
-    animation: nbCardEntry 0.5s 0.65s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .terminal-root[data-mode="gui"] #gui-links {
-    animation: nbCardEntry 0.5s 0.75s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-  .terminal-root[data-mode="gui"] #gui-snake {
-    animation: nbCardEntry 0.5s 0.85s cubic-bezier(0.16, 1, 0.3, 1) both;
-  }
-
-  @keyframes nbSlideDown {
-    0% { opacity: 0; transform: translateY(-25px); }
-    100% { opacity: 1; transform: translateY(0); }
+  .terminal-root[data-mode="gui"] .gui-grid > .nb-card {
+    animation: nbCardEntry 0.5s var(--ease-out) both;
+    animation-delay: calc(0.45s + var(--i, 0) * 0.1s);
   }
 
   @keyframes nbHeroPop {
@@ -825,11 +764,6 @@ import { Image } from 'astro:assets';
   @keyframes nbBadgeScale {
     0% { opacity: 0; transform: scale(0.4) rotate(-8deg); }
     100% { opacity: 1; transform: scale(1) rotate(0); }
-  }
-
-  @keyframes nbTextFade {
-    0% { opacity: 0; transform: translateY(12px); }
-    100% { opacity: 1; transform: translateY(0); }
   }
 
   @keyframes nbBtnBounce {
@@ -894,8 +828,19 @@ import { Image } from 'astro:assets';
     padding: 0.4rem 0.9rem; font-family: var(--font-heading); font-weight: 800; font-size: 0.82rem;
     cursor: pointer; box-shadow: var(--nb-shadow-sm); transition: all 0.15s;
   }
-  .gui-toggle-btn:hover {
-    transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-md); background: var(--nb-black); color: var(--nb-yellow);
+  .gui-toggle-btn:hover { background: var(--nb-black); color: var(--nb-yellow); }
+
+  /* Shared neubrutalist "lift" hover: nudge up-left and deepen the hard shadow. */
+  .nb-btn:hover,
+  .gui-toggle-btn:hover,
+  .gui-asset-link:hover,
+  .gui-social-btn:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--nb-shadow-md);
+  }
+  .nb-card:hover {
+    transform: translate(-2px, -2px);
+    box-shadow: var(--nb-shadow-lg);
   }
 
   /* Neubrutalism Hero */
@@ -930,7 +875,6 @@ import { Image } from 'astro:assets';
     color: var(--nb-black); box-shadow: var(--nb-shadow-sm); transition: all 0.15s;
     cursor: pointer;
   }
-  .nb-btn:hover { transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-md); }
   .nb-btn-coral { background: var(--nb-coral); color: var(--nb-white); }
   .nb-btn-yellow { background: var(--nb-white); }
   .nb-btn-sky { background: var(--nb-sky); }
@@ -954,7 +898,6 @@ import { Image } from 'astro:assets';
     border: var(--nb-stroke) solid var(--nb-black); padding: 1.5rem;
     box-shadow: var(--nb-shadow-md); transition: transform 0.15s;
   }
-  .nb-card:hover { transform: translate(-2px, -2px); box-shadow: var(--nb-shadow-lg); }
   .nb-card-yellow { background: var(--nb-yellow); }
   .nb-card-lavender { background: var(--nb-lavender); }
   .nb-card-sky { background: var(--nb-sky); }
@@ -986,14 +929,21 @@ import { Image } from 'astro:assets';
   .gui-progress-fill.sky { background: var(--nb-sky); }
   .gui-progress-fill.yellow { background: var(--nb-yellow); }
 
-  .gui-asset-list { display: flex; flex-direction: column; gap: 0.7rem; }
-  .gui-asset-link {
+  .gui-asset-list, .gui-link-grid { display: flex; flex-direction: column; gap: 0.7rem; }
+
+  /* Shared card-style link (certificate rows + social buttons) */
+  .gui-asset-link, .gui-social-btn {
     display: flex; align-items: center; gap: 0.8rem;
     background: var(--nb-white); border: 2px solid var(--nb-black);
-    padding: 0.7rem 0.9rem; text-decoration: none; color: var(--nb-black);
-    box-shadow: 3px 3px 0 0 var(--nb-black); transition: all 0.15s;
+    text-decoration: none; color: var(--nb-black);
+    box-shadow: var(--nb-shadow-sm); transition: all 0.15s;
   }
-  .gui-asset-link:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--nb-black); background: var(--nb-yellow); }
+  .gui-asset-link { padding: 0.7rem 0.9rem; }
+  .gui-social-btn {
+    padding: 0.8rem 1rem;
+    font-family: var(--font-heading); font-weight: 800; font-size: 0.9rem;
+  }
+  .gui-asset-link:hover, .gui-social-btn:hover { background: var(--nb-yellow); }
   .asset-icon { font-size: 1.4rem; }
   .asset-details { flex: 1; display: flex; flex-direction: column; }
   .asset-details strong { font-size: 0.85rem; font-weight: 800; }
@@ -1003,39 +953,66 @@ import { Image } from 'astro:assets';
     padding: 0.2rem 0.5rem; font-family: var(--font-mono); font-size: 0.65rem; font-weight: 700;
   }
 
-  .gui-link-grid { display: flex; flex-direction: column; gap: 0.7rem; }
-  .gui-social-btn {
-    display: flex; align-items: center; gap: 0.8rem;
-    background: var(--nb-white); border: 2px solid var(--nb-black);
-    padding: 0.8rem 1rem; text-decoration: none; color: var(--nb-black); font-family: var(--font-heading);
-    font-weight: 800; font-size: 0.9rem; box-shadow: 3px 3px 0 0 var(--nb-black); transition: all 0.15s;
-  }
-  .gui-social-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--nb-black); background: var(--nb-yellow); }
-
   @media (max-width: 768px) {
     .gui-hero { grid-template-columns: 1fr; }
     .gui-grid { grid-template-columns: 1fr; }
   }
 </style>
 
-<script type="module">
+<script>
+  import {
+    ASSET_FILES,
+    LINKS_BY_NAME,
+    PROFILE,
+    SKILLS,
+    SOCIAL_LINKS,
+    TERMINAL_INFO_ROWS,
+  } from '../data/portfolio';
+  import {
+    appendDivider,
+    appendGrid,
+    appendLine,
+    appendSkillBar,
+    appendToBody,
+    createEl,
+    createLine,
+    escapeHtml,
+    formatTime,
+    getTerminalBody,
+  } from '../utils/terminal-dom';
+
+  const HINT = 'Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE';
+
   // --- Terminal content data ---
   const bootSequence = [
     { text: '', delay: 0, skip: true },
-    { text: '[FAJRI-OS // ASTRO ENGINE INITIALIZED]', delay: 0, cls: 'highlight-purple' },
-    { text: 'STATUS: ONLINE // PORT: 4321 // <span class="success">200 OK</span>', delay: 0, cls: 'highlight' },
+    { text: `[${PROFILE.agent} // ASTRO ENGINE INITIALIZED]`, delay: 0, cls: 'highlight-purple' },
+    {
+      text: `STATUS: ONLINE // PORT: ${PROFILE.port} // <span class="success">200 OK</span>`,
+      delay: 0,
+      cls: 'highlight',
+    },
     { text: '', delay: 80, skip: true },
     { text: 'BOOTING TERMINAL … ██████████ (100%)', delay: 0, cls: 'highlight-cyan' },
     { text: 'INITIALIZING HUD… CYBERPUNK THEME ACTIVE', delay: 0, cls: 'success' },
-    { text: 'MOUNTING /assets/ — 7 files indexed', delay: 0, cls: 'highlight-pink' },
-    { text: 'CONNECTING TO GITHUB.COM/LAZENFAJRI …', delay: 0, cls: 'highlight' },
+    { text: `MOUNTING /assets/ — ${ASSET_FILES.length} files indexed`, delay: 0, cls: 'highlight-pink' },
+    { text: `CONNECTING TO GITHUB.COM/${PROFILE.username.toUpperCase()} …`, delay: 0, cls: 'highlight' },
     { text: 'CONNECTION ESTABLISHED // TLS 1.3 // SECURE', delay: 0, cls: 'success' },
     { text: '', delay: 80, skip: true },
     { text: '[SYS_PROFILE]', delay: 0, cls: 'tag-sys' },
-    { text: 'AGENT_ID  : <span class="highlight-pink">FAJRI-OS [v2026.08]</span>', delay: 0 },
-    { text: 'HOST_NAME : <span class="highlight">Muhammad Fajri Setyawan (LazenFajri)</span>', delay: 0 },
-    { text: 'MAJOR     : <span class="highlight">Teknik Informatika @ UDINUS</span>', delay: 0 },
-    { text: 'ALUMNUS   : <span class="highlight">SMKN 7 Semarang</span>', delay: 0 },
+    {
+      text: `AGENT_ID  : <span class="highlight-pink">${PROFILE.agent} [${PROFILE.agentVersion}]</span>`,
+      delay: 0,
+    },
+    {
+      text: `HOST_NAME : <span class="highlight">${PROFILE.fullName} (${PROFILE.username})</span>`,
+      delay: 0,
+    },
+    {
+      text: `MAJOR     : <span class="highlight">${PROFILE.major} @ ${PROFILE.institutionShort}</span>`,
+      delay: 0,
+    },
+    { text: `ALUMNUS   : <span class="highlight">SMKN 7 Semarang</span>`, delay: 0 },
     { text: '', delay: 80, skip: true },
     { text: '[SYSTEM READY] — Interactive mode. Type a command.', delay: 0, cls: 'success' },
   ];
@@ -1047,12 +1024,12 @@ import { Image } from 'astro:assets';
       '',
       '<span class="dim">TECH_STACK & PROFICIENCY</span>',
       '',
-      'After Effects (VFX/Motion)      <span class="highlight-pink">[SEMI-PRO]</span>',
-      'Agent Prompting        <span class="highlight-cyan">[SEMI-PRO]</span>',
-      'Coding Fundamentals           <span class="highlight-purple">[BASIC]</span>',
+      ...SKILLS.map(
+        (skill) => `${skill.name} <span class="${skill.cliHighlight}">[${skill.level}]</span>`,
+      ),
       '',
       'Proficiency: [SEMI-PRO] ████████░░ 80%  |  [BASIC] ████░░░░░░ 40%',
-    ]
+    ],
   };
 
   const assetsData = {
@@ -1065,289 +1042,222 @@ import { Image } from 'astro:assets';
       '<span class="highlight">Location:</span> <span class="dim">/assets/ (public mount)</span>',
       '<span class="highlight">Status:</span>  <span class="success">VERIFIED & MOUNTED</span>',
       '',
-    ]
+    ],
   };
-
-  const assetFiles = [
-    { name: 'CCNA License.pdf', icon: '📄', size: '371.4 KB' },
-    { name: 'Java Fundametals license.pdf', icon: '📄', size: '91.4 KB' },
-    { name: 'PC, Hardware, and Software License.pdf', icon: '📄', size: '215.4 KB' },
-    { name: 'MyLogo.png', icon: '🖼️', size: '97.5 KB' },
-    { name: 'Muhammad Fajri Setyawan.png', icon: '🖼️', size: '3.8 MB' },
-    { name: 'LinkedIn_icon.svg', icon: '🎨', size: '1.1 KB' },
-    { name: 'Octicons-mark-github.svg', icon: '🎨', size: '968 B' },
-    { name: 'Youtube_logo.png', icon: '🎨', size: '9.6 KB' },
-  ];
 
   const linksData = {
     title: '[03 // LINKS]',
     tag: 'tag-prof',
-    lines: [
-      '',
-      '<span class="dim">EXTERNAL NODES</span>',
-      '',
-    ]
+    lines: ['', '<span class="dim">EXTERNAL NODES</span>', ''],
   };
 
-  const linkItems = [
-    { name: 'LinkedIn', url: 'https://www.linkedin.com/in/muhammad-fajri-setyawan-51100726b', icon: '💼' },
-    { name: 'GitHub', url: 'https://github.com/LazenFajri', icon: '🐙' },
-    { name: 'YouTube', url: 'https://youtube.com/@fajriaep580?si=5w38K4YjcdZ-uHCX', icon: '▶️' },
-  ];
-
-  function fmtTime() {
-    const d = new Date();
-    const pad = (n) => n.toString().padStart(2, '0');
-    return `${pad(d.getHours())}:${pad(d.getMinutes())}:${pad(d.getSeconds())}`;
-  }
-
-  function createLine(text, cls, delayIdx) {
-    const spans = document.createElement('div');
-    spans.className = 'line line-delay-' + delayIdx;
-    if (cls) {
-      const tagMatch = cls.match(/^tag-/);
-      if (tagMatch) {
-        const tag = document.createElement('span');
-        tag.className = cls;
-        const nameMap = {
-          'tag-sys': '[SYS_INFO]',
-          'tag-prof': '[USER_PROFILE]',
-          'tag-asset': '[ASTRO_ASSETS]',
-          'tag-ok': '[OK]',
-          'tag-warn': '[WARN]',
-        };
-        tag.textContent = nameMap[cls] || '[' + cls + ']';
-        spans.appendChild(tag);
-      } else {
-        spans.classList.add(cls);
-      }
-    }
-    if (text) { spans.innerHTML += text; }
-    return spans;
-  }
-
   function runBootSequence() {
-    const body = document.getElementById('terminal-body');
+    const body = getTerminalBody();
     body.innerHTML = '';
-    let idx = 0; let lineIndex = 0;
+    let idx = 0;
+    let lineIndex = 0;
     function nextLine() {
-      if (idx >= bootSequence.length) { addPrompt(); return; }
-      const entry = bootSequence[idx]; idx++;
-      if (entry.skip) { setTimeout(nextLine, entry.delay || 100); return; }
-      const lineEl = createLine(entry.text, entry.cls, Math.min(lineIndex, 15));
-      body.appendChild(lineEl); lineIndex++;
-      body.scrollTop = body.scrollHeight;
+      if (idx >= bootSequence.length) {
+        addPrompt();
+        return;
+      }
+      const entry = bootSequence[idx];
+      idx++;
+      if (entry.skip) {
+        setTimeout(nextLine, entry.delay || 100);
+        return;
+      }
+      appendToBody(createLine(entry.text, entry.cls, lineIndex));
+      lineIndex++;
       setTimeout(nextLine, entry.delay || 300);
     }
     nextLine();
   }
 
   function addPrompt() {
-    const body = document.getElementById('terminal-body');
-    const prompt = document.createElement('div');
-    prompt.className = 'line';
-    prompt.innerHTML = '<span class="dim">[' + fmtTime() + ']</span> <span class="input-prompt">fajri$</span> <span class="dim">Ketik [1] SKILLS | [2] ASSETS/LICENSE | [3] LINKS | [4] PROFILE</span>';
-    body.appendChild(prompt);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function outputLine(text, cls) {
-    const body = document.getElementById('terminal-body');
-    const lineIndex = body.children.length;
-    const lineEl = createLine(text, cls, 0);
-    lineEl.style.animationDelay = '0ms';
-    body.appendChild(lineEl);
-    body.scrollTop = body.scrollHeight;
-  }
-
-  function outputDivider() {
-    const body = document.getElementById('terminal-body');
-    const div = document.createElement('div');
-    div.className = 'divider';
-    div.textContent = '----------------------------------------';
-    body.appendChild(div);
-    body.scrollTop = body.scrollHeight;
+    appendToBody(
+      createEl(
+        'div',
+        'line',
+        `<span class="dim">[${formatTime()}]</span> ` +
+          `<span class="input-prompt">fajri$</span> <span class="dim">${HINT}</span>`,
+      ),
+    );
   }
 
   function clearOutput() {
-    const body = document.getElementById('terminal-body');
-    body.innerHTML = '';
+    getTerminalBody().innerHTML = '';
     addPrompt();
-  }
-
-  function handleCommand(cmd) {
-    const body = document.getElementById('terminal-body');
-    const echo = document.createElement('div');
-    echo.className = 'line';
-    echo.innerHTML = '<span class="highlight-pink">fajri$</span> ' + escapeHtml(cmd);
-    body.appendChild(echo);
-    body.scrollTop = body.scrollHeight;
-
-    const c = cmd.trim().toLowerCase();
-
-    if (c === '' || c === 'help' || c === 'h' || c === '?') { showHelp(); }
-    else if (c === '1' || c === 'skills' || c === 'skill') { showSkills(); }
-    else if (c === '2' || c === 'assets' || c === 'license' || c === 'cert') { showAssets(); }
-    else if (c === '3' || c === 'links' || c === 'social' || c === 'connect') { showLinks(); }
-    else if (c === '4' || c === 'profile' || c === 'about' || c === 'whoami') { showProfile(); }
-    else if (c === 'makan' || c === 'hobby' || c === 'eat') { showMakan(); }
-    else if (c === '4321' || c === 'port') { showPortStatus(); }
-    else if (c === 'clear' || c === 'cls') { clearOutput(); return; }
-    else {
-      outputLine('[ERROR] Unknown command: <span class="highlight-pink">' + escapeHtml(cmd) + '</span>', 'tag-warn');
-      outputLine('<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>', 'dim');
-    }
-    addPrompt();
-  }
-
-  function escapeHtml(text) {
-    const div = document.createElement('div');
-    div.textContent = text;
-    return div.innerHTML;
   }
 
   function showHelp() {
-    outputLine('<span class="success">[OK]</span> Available commands:', 'tag-ok');
-    outputLine('  [1] SKILLS           — View tech stack & proficiency', '');
-    outputLine('  [2] ASSETS/LICENSE   — Browse local Astro assets', '');
-    outputLine('  [3] LINKS            — Social & GitHub nodes', '');
-    outputLine('  [4] PROFILE          — Fajri\'s profile card', '');
-    outputLine('  [makan]              — Personal hobby (food!)', '');
-    outputLine('  [clear]              — Clear terminal', '');
-    outputLine('  [help]               — This help', '');
+    appendLine('<span class="success">[OK]</span> Available commands:', 'tag-ok');
+    for (const command of commands) {
+      if (command.help) appendLine(`  ${command.usage} — ${command.help}`);
+    }
   }
 
   function showSkills() {
-    outputLine(skillsData.title, 'tag-sys');
-    outputDivider();
-    for (const line of skillsData.lines) { outputLine(line); }
+    appendLine(skillsData.title, skillsData.tag);
+    appendDivider();
+    for (const line of skillsData.lines) appendLine(line);
 
-    const body = document.getElementById('terminal-body');
-    const isGui = document.getElementById('fajri-terminal').dataset.mode === 'gui';
-
-    const skillDefs = [
-      { name: 'After Effects', level: 'SEMI-PRO', pct: 80, className: isGui ? 'ae' : '', color: isGui ? 'var(--nb-coral)' : 'var(--accent-pink)' },
-      { name: 'Agent Prompting', level: 'SEMI-PRO', pct: 80, className: isGui ? 'hermes' : '', color: isGui ? 'var(--nb-sky)' : 'var(--accent-cyan)' },
-      { name: 'Coding Fundamentals', level: 'BASIC', pct: 40, className: isGui ? 'coding' : '', color: isGui ? 'var(--nb-lavender)' : 'var(--accent-purple)' },
-    ];
-
-    skillDefs.forEach((skill, i) => {
+    const isGui = isGuiMode();
+    SKILLS.forEach((skill, i) => {
       setTimeout(() => {
-        const wrapper = document.createElement('div');
-        wrapper.className = 'skill-bar';
-        wrapper.innerHTML = '<div class="skill-name"><span>' + skill.name + '</span><span class="level-label">[' + skill.level + '] ' + skill.pct + '%</span></div>';
-        const track = document.createElement('div');
-        track.className = 'skill-track';
-        const fill = document.createElement('div');
-        fill.className = 'skill-fill' + (skill.className ? ' ' + skill.className : '');
-        fill.style.width = '0%';
-        if (!isGui) { fill.style.backgroundColor = skill.color; }
-        const barText = document.createElement('span');
-        barText.className = 'bar-text';
-        barText.textContent = skill.pct + '%';
-        fill.appendChild(barText);
-        track.appendChild(fill);
-        wrapper.appendChild(track);
-        body.appendChild(wrapper);
-        body.scrollTop = body.scrollHeight;
-        setTimeout(() => { fill.style.width = skill.pct + '%'; }, 100);
+        appendSkillBar({
+          name: skill.shortName,
+          level: skill.level,
+          pct: skill.pct,
+          fillClass: isGui ? skill.guiClass : undefined,
+          fillColor: isGui ? undefined : skill.cliColor,
+        });
       }, i * 400);
     });
   }
 
   function showAssets() {
-    outputLine(assetsData.title, 'tag-asset');
-    outputDivider();
-    for (const line of assetsData.lines) { outputLine(line); }
+    appendLine(assetsData.title, assetsData.tag);
+    appendDivider();
+    for (const line of assetsData.lines) appendLine(line);
 
-    const body = document.getElementById('terminal-body');
     setTimeout(() => {
-      const grid = document.createElement('div');
-      grid.className = 'asset-grid';
-      assetFiles.forEach((file) => {
-        const item = document.createElement('div');
-        item.className = 'asset-item';
-        item.innerHTML = '<span class="asset-icon">' + file.icon + '</span><span class="asset-name">' + file.name + '</span><span class="asset-size dim">' + file.size + '</span>';
-        grid.appendChild(item);
-      });
-      body.appendChild(grid);
-      body.scrollTop = body.scrollHeight;
+      appendGrid('asset-grid', ASSET_FILES, (asset) =>
+        createEl(
+          'div',
+          'asset-item',
+          `<span class="asset-icon">${asset.emoji}</span>` +
+            `<span class="asset-name">${asset.file}</span>` +
+            `<span class="asset-size dim">${asset.size}</span>`,
+        ),
+      );
 
       setTimeout(() => {
-        const linkNote = document.createElement('div');
-        linkNote.className = 'line';
-        linkNote.innerHTML = '<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: <a href="https://github.com/LazenFajri" class="highlight">github.com/LazenFajri</a></span>';
-        body.appendChild(linkNote);
-        body.scrollTop = body.scrollHeight;
+        appendLine(
+          '<span class="dim">💡 Files served from public/assets/ — inspect on GitHub: ' +
+            `<a href="${LINKS_BY_NAME.GitHub.url}" class="highlight">github.com/${PROFILE.username}</a></span>`,
+        );
       }, 200);
     }, 100);
   }
 
   function showLinks() {
-    outputLine(linksData.title, 'tag-prof');
-    outputDivider();
-    for (const line of linksData.lines) { outputLine(line); }
+    appendLine(linksData.title, linksData.tag);
+    appendDivider();
+    for (const line of linksData.lines) appendLine(line);
 
-    const body = document.getElementById('terminal-body');
     setTimeout(() => {
-      const grid = document.createElement('div');
-      grid.className = 'link-grid';
-      linkItems.forEach((link) => {
-        const item = document.createElement('a');
-        item.className = 'link-item';
+      appendGrid('link-grid', SOCIAL_LINKS, (link) => {
+        const item = createEl(
+          'a',
+          'link-item',
+          `<span class="link-icon">${link.emoji}</span>` +
+            `<span class="link-text">${link.name}</span>` +
+            `<span class="link-url dim">${new URL(link.url).hostname}</span>`,
+        );
         item.href = link.url;
         item.target = '_blank';
         item.rel = 'noopener noreferrer';
-        item.innerHTML = '<span class="link-icon">' + link.icon + '</span><span class="link-text">' + link.name + '</span><span class="link-url dim">' + new URL(link.url).hostname + '</span>';
-        grid.appendChild(item);
+        return item;
       });
-      body.appendChild(grid);
-      body.scrollTop = body.scrollHeight;
 
       setTimeout(() => {
-        const note = document.createElement('div');
-        note.className = 'line';
-        note.innerHTML = '<span class="dim">🔗 <span class="makan">Check out my YouTube @fajriaep580 for After Effects work!</span></span>';
-        body.appendChild(note);
-        body.scrollTop = body.scrollHeight;
+        appendLine(
+          '<span class="dim">🔗 <span class="makan">Check out my YouTube ' +
+            '@fajriaep580 for After Effects work!</span></span>',
+        );
       }, 200);
     }, 100);
   }
 
   function showProfile() {
-    outputLine('<span class="highlight-purple">[04 // PROFILE]</span>', 'tag-prof');
-    outputDivider();
+    appendLine('<span class="highlight-purple">[04 // PROFILE]</span>', 'tag-prof');
+    appendDivider();
 
-    const body = document.getElementById('terminal-body');
-    const grid = document.createElement('div');
-    grid.className = 'profile-grid';
-    grid.innerHTML =
-      '<img src="/assets/Muhammad Fajri Setyawan.png" alt="Muhammad Fajri Setyawan" class="profile-pic" width="120" height="120" loading="eager" decoding="async" />' +
-      '<div class="profile-details">' +
-        '<div><span class="label">Nama Lengkap</span><br/><span class="value highlight">Muhammad Fajri Setyawan</span></div>' +
-        '<div><span class="label">Username</span><br/><span class="value highlight-pink">LazenFajri</span> <span class="badge badge-coder">CODER</span></div>' +
-        '<div><span class="label">Status</span><br/><span class="value">Undergraduate Student (Mahasiswa)</span> <span class="badge badge-student">STUDENT</span></div>' +
-        '<div><span class="label">Institution</span><br/><span class="value">Universitas Dian Nuswarmantoro (UDINUS)</span></div>' +
-        '<div><span class="label">Major</span><br/><span class="value">Teknik Informatika (Informatics Engineering)</span></div>' +
-        '<div><span class="label">Prior Education</span><br/><span class="value">SMK Negeri 7 Semarang</span></div>' +
-        '<div><span class="label">Hobby</span><br/><span class="value makan">Food & Culinary Exploration ("Makan") 🍲</span></div>' +
-        '<div><span class="label">Agent</span><br/><span class="value dim">FAJRI-OS v2026.08 — AI Terminal Agent</span></div>' +
-      '</div>';
-    body.appendChild(grid);
-    body.scrollTop = body.scrollHeight;
+    const rows = TERMINAL_INFO_ROWS.map((row) => {
+      const badge = row.badge
+        ? ` <span class="badge ${row.badge.className}">${row.badge.text}</span>`
+        : '';
+      return (
+        `<div><span class="label">${row.label}</span><br/>` +
+        `<span class="value${row.valueClass ? ` ${row.valueClass}` : ''}">${row.value}</span>${badge}</div>`
+      );
+    }).join('');
+
+    appendToBody(
+      createEl(
+        'div',
+        'profile-grid',
+        `<img src="${PROFILE.avatar}" alt="${PROFILE.fullName}" class="profile-pic" ` +
+          'width="120" height="120" loading="eager" decoding="async" />' +
+          `<div class="profile-details">${rows}</div>`,
+      ),
+    );
   }
 
   function showMakan() {
     const foods = ['🍜 Ramen', '🍕 Pizza', '🍔 Burger', '🍣 Sushi', '🌮 Tacos', '🍝 Pasta', '🍗 Fried Chicken', '🥘 Nasi Goreng', '🍩 Donuts', '🍰 Cake'];
     const randomFood = foods[Math.floor(Math.random() * foods.length)];
-    outputLine('[MAKUAN AGENT] Fajri\'s current makan craving: <span class="makan">' + randomFood + '</span>', 'tag-warn');
-    outputLine('<span class="dim">Pro tip: Ask him about the best warung in <span class="highlight">Semarang</span> — he knows the spots.</span>', 'dim');
+    appendLine(
+      `[MAKUAN AGENT] Fajri's current makan craving: <span class="makan">${randomFood}</span>`,
+      'tag-warn',
+    );
+    appendLine(
+      '<span class="dim">Pro tip: Ask him about the best warung in ' +
+        `<span class="highlight">${PROFILE.location.split(',')[0]}</span> — he knows the spots.</span>`,
+      'dim',
+    );
   }
 
   function showPortStatus() {
-    outputLine('[PORT 4321] <span class="success">ACTIVE</span> // STATUS: 200 OK', 'tag-ok');
-    outputLine('<span class="dim">Listening on: <span class="highlight">localhost:4321</span></span>', 'dim');
-    outputLine('<span class="dim">TLS: <span class="success">ENABLED</span> | Engine: <span class="highlight-cyan">ASTRO</span> | Mode: <span class="highlight-purple">SERVER</span></span>', 'dim');
+    appendLine(`[PORT ${PROFILE.port}] <span class="success">ACTIVE</span> // STATUS: 200 OK`, 'tag-ok');
+    appendLine(
+      `<span class="dim">Listening on: <span class="highlight">localhost:${PROFILE.port}</span></span>`,
+      'dim',
+    );
+    appendLine(
+      '<span class="dim">TLS: <span class="success">ENABLED</span> | Engine: ' +
+        '<span class="highlight-cyan">ASTRO</span> | Mode: <span class="highlight-purple">SERVER</span></span>',
+      'dim',
+    );
+  }
+
+  /** Command registry: aliases, help text and handler in one place. */
+  const commands = [
+    { usage: '[1] SKILLS', help: 'View tech stack & proficiency', aliases: ['1', 'skills', 'skill'], run: showSkills },
+    { usage: '[2] ASSETS/LICENSE', help: 'Browse local Astro assets', aliases: ['2', 'assets', 'license', 'cert'], run: showAssets },
+    { usage: '[3] LINKS', help: 'Social & GitHub nodes', aliases: ['3', 'links', 'social', 'connect'], run: showLinks },
+    { usage: '[4] PROFILE', help: "Fajri's profile card", aliases: ['4', 'profile', 'about', 'whoami'], run: showProfile },
+    { usage: '[makan]', help: 'Personal hobby (food!)', aliases: ['makan', 'hobby', 'eat'], run: showMakan },
+    { usage: '[clear]', help: 'Clear terminal', aliases: ['clear', 'cls'], run: clearOutput, silent: true },
+    { usage: '[help]', help: 'This help', aliases: ['', 'help', 'h', '?'], run: showHelp },
+    { usage: '[port]', aliases: [PROFILE.port, 'port'], run: showPortStatus },
+  ];
+
+  function isGuiMode() {
+    return document.getElementById('fajri-terminal')?.dataset.mode === 'gui';
+  }
+
+  function handleCommand(cmd) {
+    appendToBody(
+      createEl('div', 'line', `<span class="highlight-pink">fajri$</span> ${escapeHtml(cmd)}`),
+    );
+
+    const normalized = cmd.trim().toLowerCase();
+    const command = commands.find((entry) => entry.aliases.includes(normalized));
+
+    if (!command) {
+      appendLine(`[ERROR] Unknown command: <span class="highlight-pink">${escapeHtml(cmd)}</span>`, 'tag-warn');
+      appendLine(
+        '<span class="dim">Available: [1] SKILLS, [2] ASSETS, [3] LINKS, [4] PROFILE, [help], [makan], [clear]</span>',
+        'dim',
+      );
+      addPrompt();
+      return;
+    }
+
+    command.run();
+    if (!command.silent) addPrompt();
   }
 
   document.addEventListener('DOMContentLoaded', function() {
@@ -1367,16 +1277,16 @@ import { Image } from 'astro:assets';
     const modeToggle = document.getElementById('mode-toggle');
     const guiModeToggle = document.getElementById('gui-mode-toggle');
     const root = document.getElementById('fajri-terminal');
-    
+
     function toggleMode() {
-      const isGui = root.dataset.mode === 'gui';
-      root.dataset.mode = isGui ? 'terminal' : 'gui';
+      const wasGui = root.dataset.mode === 'gui';
+      root.dataset.mode = wasGui ? 'terminal' : 'gui';
       if (modeToggle) {
-        modeToggle.classList.toggle('active', !isGui);
+        modeToggle.classList.toggle('active', !wasGui);
         const icon = modeToggle.querySelector('.mode-icon');
         const label = modeToggle.querySelector('.mode-label');
-        if (icon) icon.textContent = !isGui ? '▣' : '□';
-        if (label) label.textContent = !isGui ? 'TERM' : 'GUI';
+        if (icon) icon.textContent = !wasGui ? '▣' : '□';
+        if (label) label.textContent = !wasGui ? 'TERM' : 'GUI';
       }
     }
 
@@ -1386,28 +1296,32 @@ import { Image } from 'astro:assets';
     // Parallax Scroll & Mousemove Effects for GUI Mode
     const guiContainer = document.getElementById('neubrutalism-gui');
     if (guiContainer) {
-      // 1. Mouse move 3D tilt effect on GUI Hero and Cards
+      /** Applies `transform` to every `[data-speed]` element inside `scope`. */
+      const applyParallax = (scope, toTransform) => {
+        if (!isGuiMode()) return;
+        scope.querySelectorAll('[data-speed]').forEach((el) => {
+          const speed = parseFloat(el.getAttribute('data-speed'));
+          el.style.transform = toTransform(Number.isNaN(speed) ? 0.1 : speed);
+        });
+      };
+
+      // 1. Mouse move parallax on the floating background shapes
       guiContainer.addEventListener('mousemove', function(e) {
-        if (root.dataset.mode !== 'gui') return;
         const rect = guiContainer.getBoundingClientRect();
         const mouseX = e.clientX - rect.left - rect.width / 2;
         const mouseY = e.clientY - rect.top - rect.height / 2;
-
-        document.querySelectorAll('.parallax-shape').forEach(shape => {
-          const speed = parseFloat(shape.getAttribute('data-speed')) || 0.1;
-          shape.style.transform = `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) rotate(${mouseX * 0.02}deg)`;
-        });
+        applyParallax(
+          guiContainer.querySelector('.gui-parallax-bg') || guiContainer,
+          (speed) =>
+            `translate3d(${mouseX * speed * 0.4}px, ${mouseY * speed * 0.4}px, 0) ` +
+            `rotate(${mouseX * 0.02}deg)`,
+        );
       });
 
       // 2. Scroll Parallax
       window.addEventListener('scroll', function() {
-        if (root.dataset.mode !== 'gui') return;
         const scrolled = window.scrollY;
-        document.querySelectorAll('#neubrutalism-gui [data-speed]').forEach(el => {
-          const speed = parseFloat(el.getAttribute('data-speed')) || 0.05;
-          const yPos = -(scrolled * speed);
-          el.style.transform = `translate3d(0, ${yPos}px, 0)`;
-        });
+        applyParallax(guiContainer, (speed) => `translate3d(0, ${-(scrolled * speed)}px, 0)`);
       });
     }
 
@@ -1444,8 +1358,7 @@ import { Image } from 'astro:assets';
 
         p.draw = () => {
           p.clear();
-          const root = document.getElementById('fajri-terminal');
-          const isGui = root && root.dataset.mode === 'gui';
+          const isGui = isGuiMode();
 
           const guiColors = ['#FFD23F', '#FF6B6B', '#74B9FF', '#B8A9FA', '#88D498'];
           const cliColors = ['rgba(0, 240, 255, 0.5)', 'rgba(255, 46, 149, 0.5)', 'rgba(138, 43, 226, 0.5)'];
