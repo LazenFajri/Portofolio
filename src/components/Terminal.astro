@@ -1013,8 +1013,23 @@ import { Image } from 'astro:assets';
   .gui-social-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 var(--nb-black); background: var(--nb-yellow); }
 
   @media (max-width: 768px) {
-    .gui-hero { grid-template-columns: 1fr; }
-    .gui-grid { grid-template-columns: 1fr; }
+    .gui-hero { grid-template-columns: 1fr; padding: 1.2rem; }
+    .gui-grid { grid-template-columns: 1fr; gap: 1rem; }
+    .gui-hero-title { font-size: 1.6rem; }
+    .gui-header { flex-direction: column; align-items: flex-start; }
+    .gui-nav-actions { width: 100%; justify-content: space-between; }
+    .terminal-root { margin: 1rem auto; width: calc(100% - 1.5rem); }
+  }
+
+  /* Accessible focus indicators & anti-slop micro-interactions */
+  a:focus-visible, button:focus-visible, input:focus-visible {
+    outline: 3px solid var(--accent-cyan);
+    outline-offset: 2px;
+  }
+  .terminal-root[data-mode="gui"] a:focus-visible,
+  .terminal-root[data-mode="gui"] button:focus-visible {
+    outline: 3px solid var(--nb-black);
+    outline-offset: 2px;
   }
 </style>
 
@@ -1327,7 +1342,7 @@ import { Image } from 'astro:assets';
         '<div><span class="label">Nama Lengkap</span><br/><span class="value highlight">Muhammad Fajri Setyawan</span></div>' +
         '<div><span class="label">Username</span><br/><span class="value highlight-pink">LazenFajri</span> <span class="badge badge-coder">CODER</span></div>' +
         '<div><span class="label">Status</span><br/><span class="value">Undergraduate Student (Mahasiswa)</span> <span class="badge badge-student">STUDENT</span></div>' +
-        '<div><span class="label">Institution</span><br/><span class="value">Universitas Dian Nuswarmantoro (UDINUS)</span></div>' +
+        '<div><span class="label">Institution</span><br/><span class="value">Universitas Dian Nuswantoro (UDINUS)</span></div>' +
         '<div><span class="label">Major</span><br/><span class="value">Teknik Informatika (Informatics Engineering)</span></div>' +
         '<div><span class="label">Prior Education</span><br/><span class="value">SMK Negeri 7 Semarang</span></div>' +
         '<div><span class="label">Hobby</span><br/><span class="value makan">Food & Culinary Exploration ("Makan") 🍲</span></div>' +
