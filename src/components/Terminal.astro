@@ -214,7 +214,7 @@ import { Image } from 'astro:assets';
             <span>YouTube (@fajriaep580)</span>
           </a>
           <a href="https://github.com/LazenFajri" target="_blank" rel="noopener" class="gui-social-btn">
-            <img src="/assets/Octicons-mark-github.svg" alt="GitHub" width="22" height="22" />
+            <img src="/assets/Octicons-mark-github.svg" alt="GitHub" class="gui-social-github" width="22" height="22" />
             <span>GitHub (LazenFajri)</span>
           </a>
           <a href="https://www.linkedin.com/in/muhammad-fajri-setyawan-51100726b" target="_blank" rel="noopener" class="gui-social-btn">
@@ -1036,6 +1036,12 @@ import { Image } from 'astro:assets';
     font-weight: 800; font-size: 0.92rem; box-shadow: 3px 3px 0 0 #000000; transition: all 0.15s;
   }
   .gui-social-btn:hover { transform: translate(-2px, -2px); box-shadow: 5px 5px 0 0 #000000; border-color: #f59e0b; background: #1c2738; }
+  .gui-social-btn img {
+    width: 22px; height: 22px; object-fit: contain; flex-shrink: 0;
+  }
+  .gui-social-btn .gui-social-github {
+    filter: invert(1);
+  }
 
   @media (max-width: 768px) {
     .gui-hero { grid-template-columns: 1fr; padding: 1.2rem; }
