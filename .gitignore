@@ -2,3 +2,6 @@ node_modules
 dist
 .nuxt
 .output
+.env
+.env.local
+.env.*.local
